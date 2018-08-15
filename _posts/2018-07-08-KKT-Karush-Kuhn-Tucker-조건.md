@@ -1,6 +1,6 @@
 ---
 title: KKT (Karush-Kuhn-Tucker) 조건
-date: 2018-07-08 15:43:13
+description: 최적화에서 사용되는 라그랑주 승수법과 KKT 조건에 대해 알아봅니다.
 category:
 - MachineLearning
 tags:
@@ -37,4 +37,8 @@ $$h(x, \lambda) = f(x) + \sum_{j=1}^M\lambda_j g_j(x)$$
 - 모든 독립 변수에 대한 미분이 0: $\dfrac{\partial h(x, \lambda)}{\partial x_i} = 0$
 - 모든 라그랑주 승수와 부등식의 곱이 0: $\lambda_j \cdot \dfrac{\partial h(x, \lambda)}{\partial \lambda_j} = \lambda \cdot g_j = 0$
 - 음수가 아닌 라그랑주 승수: $\lambda_j \ge 0$
+
+
+
+
 
