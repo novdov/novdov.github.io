@@ -1,11 +1,10 @@
 ---
 title: Corpus-based Chatbots
 date: 2018-05-22 20:37:14
+description: 말뭉치 기반 챗봇은 규칙을 이용하는 대신 인간 간 대화 혹은 인간-기계 간 대화에서의 인간의 반응을 학습한다. 보통 이용되는 말뭉치로는 Twitter, Weibo, 영화 대사 등이 있다. 말뭉치 기반 챗봇 시스템에는 두 타입이 있는데 하나는 정보 검색 기반(information retrieval based)이고 다른 하나는 시퀀스 변환 기반의 지도 학습 시스템이다.
 categories:
 - NLP
 tags:
-- python
-- til
 - machine learning
 - deep learning
 ---
