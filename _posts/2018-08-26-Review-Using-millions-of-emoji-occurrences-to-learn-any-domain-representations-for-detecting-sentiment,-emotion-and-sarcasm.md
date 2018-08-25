@@ -1,5 +1,5 @@
 ---
-title: [Review] Using millions of emoji occurrences to learn any-domain representations for detecting sentiment, emotion and sarcasm
+title: '[Review] Using millions of emoji occurrences to learn any-domain representations for detecting sentiment emotion and sarcasm'
 description: 이모지를 이용한 domain representation 학습과 레이어의 각 부분을 따로 학습 시키는 transfer learning "chain-thaw”를 소개한 논문을 리뷰합니다.
 date: 2018-08-26
 category:
