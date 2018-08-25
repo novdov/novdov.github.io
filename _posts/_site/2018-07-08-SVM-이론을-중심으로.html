@@ -1,0 +1,87 @@
+<h2 id="서포트-벡터와-마진">서포트 벡터와 마진</h2>
+
+<p>선형 SVM 분류 모델은 판별 함수 $w^T \cdot x - w_0 = w_1x_1 + \cdots w_nx_n - w_0$ 를 계산해서 새로운 샘플 $x$ 의 클래스를 예측한다. $y$ 데이터는 $+1, -1$ 두 개의 값을 가지고, 이를 분류하는 문제를 풀어야 한다. 판별 함수의 정의에 따라 $y$ 값이 $+1$ 인 데이터 $x_+$ 에 대한 판별 함수 값은 양수가 되며, 반대로 $y$ 값이 $-1$ 인 데이터 $x_-$ 에 대한 판별 함수 값은 음수가 된다.</p>
+
+<script type="math/tex; mode=display">f(x_+) = w^T \cdot x - w_0 \ge 0</script>
+
+<script type="math/tex; mode=display">f(x_-) = w^T \cdot x - w_0 \lt 0</script>
+
+<p>$y$ 값이 $+1$ 인 데이터 중에서 판별 함수의 값이 가장 작은 데이터를 $x^+$ 라 하고 $y$ 값이 $-1$ 인 데이터 중에서 판별 함수의 값이 가장 큰 데이터를 $x^-$ 라고 하면, 이 데이터들은 각각의 클래스에 속한 데이터 중에서 가장 경계선에 가까이 있는 데이터이다. 이 데이터를 <strong>서포트 벡터 (support vector)</strong> 라고 한다.</p>
+
+<p>부호만 지키면 되므로 실제 $f(x^+)$ 와 $f(x^-)$ 값은 어떤 값이 되어도 상관없으므로 다음과 같이 가정한다.</p>
+
+<script type="math/tex; mode=display">f(x_+) = w^T \cdot x - w_0 = 1</script>
+
+<script type="math/tex; mode=display">f(x_-) = w^T \cdot x - w_0 = -1</script>
+
+<p>판별 경계선과 데이터 $x^+$, $x^-$ 사이의 거리는 다음과 같다.</p>
+
+<script type="math/tex; mode=display">\dfrac{w^T x^+ - w_0}{\| w \|} = \dfrac{1}{\|w \|}</script>
+
+<script type="math/tex; mode=display">-\dfrac{w^T x^- - w_0}{\| w \|} = \dfrac{1}{\| w \|}</script>
+
+<p>이 거리의 합을 <strong>마진 (margin)</strong> 이라고 하며 마진이 클 수로 경계선이 더 안정적이라고 할 수 있다.</p>
+
+<script type="math/tex; mode=display">\dfrac{w^T x^+ - w_0}{\| w \|} - -\dfrac{w^T x^- - w_0}{\| w \|} = \dfrac{2}{\| w \|}</script>
+
+<p>마진이 최대가 되는 경우는 $| w |$, 즉 $| w |^2$ 가 최솟값인 경우와 같다. 즉, 다음과 같은 목적 함수를 최소화한다.</p>
+
+<script type="math/tex; mode=display">L  = \dfrac{1}{2} \| w \|^2 = \dfrac{1}{2} w^T w</script>
+
+<blockquote>
+  <p>$| w |$ 를 최소화하는 대신 $\dfrac{1}{2} | w |^2$ 인 $\dfrac{1}{2} w^T w$ 를 최소화한다. 이는 $\dfrac{1}{2} w^T$ 가 깔끔하고 간단하게 미분되기 때문이다. 반면 $| w |$ 는 $w = 0$ 에서 미분할 수 없다.</p>
+</blockquote>
+
+<p>또한 모든 표본 데이터를 제대로 분류해야 하므로 모든 데이터에 대해 다음 조건을 만족해야 한다.</p>
+
+<script type="math/tex; mode=display">y_i \cdot f(x_i) = y_i \cdot (w^T x_i - w_0) \ge 1 \;\;\; (i = 1, 2, \cdots, ㅜ)</script>
+
+<p>라그랑주 승수법을 사용하면 목적 함수를 다음과 같이 나타낼 수 있다.</p>
+
+<script type="math/tex; mode=display">L = \dfrac{1}{2}w^T w - \sum_{i=1}^N a_i \{ y_i \cdot (w^T x_i - w_0) - 1 \}</script>
+
+<h2 id="dual-problem-쌍대-문제-dual-form">Dual Problem (쌍대 문제, Dual Form)</h2>
+
+<p>원 문제 (primal problem) 라는 제약이 있는 최적화 문제가 주어지면 <strong>쌍대 문제 (dual problem)</strong> 라는 다른 문제로 표현할 수 있다. 일반적으로 쌍대 문제 해는 원 문제 해의 하한값이지만, 어떤 조건 하에서는 원 문제와 동일한 해를 제공한다. SVM은 이 조건을 만족시킨다.</p>
+
+<p>최적화 조건은 목적 함수 $L$ 을 $w$, $w_0$ 으로 미분한 값이 0이 되어야 하는 것이다.</p>
+
+<script type="math/tex; mode=display">\dfrac{\partial L}{\partial w} = 0​</script>
+
+<script type="math/tex; mode=display">\dfrac{\partial L}{\partial w_0} = 0</script>
+
+<p>이 식을 풀어서 정리하면 다음과 같아진다.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{eqnarray}\dfrac{\partial L}{\partial w} &=& \dfrac{\partial}{\partial w} \left( \dfrac{1}{2} w^T w \right) -     \dfrac{\partial}{\partial w} \sum_{i=1}^N \left( a_i y_i w^Tx_i - a_i y_i w_o - a_i \right) \\\ &=& w - \sum_{i=1}^N  a_i y_i x_i \\\ &=& 0\end{eqnarray} %]]></script>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{eqnarray}\dfrac{\partial L}{\partial w_0} &=& \dfrac{\partial}{\partial w_0} \left( \dfrac{1}{2} w^T w \right) -     \dfrac{\partial}{\partial w_0} \sum_{i=1}^N \left( a_i y_i w^Tx_i - a_i y_i w_o - a_i \right) \\\ &=& \sum_{i=1}^N  a_i y_i \\\ &=& 0\end{eqnarray} %]]></script>
+
+<p>즉 아래와 같다.</p>
+
+<script type="math/tex; mode=display">w = \sum_{i=1}^N a_i y_i x_i</script>
+
+<script type="math/tex; mode=display">0 = \sum_{i=1}^N a_i y_i</script>
+
+<p>이 두 수식을 원래의 목적 함수에 대입하여 $w$, $w_0$ 을 없애면 다음과 같다.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{eqnarray} L &=& \dfrac{1}{2} w^T w - \sum_{i=1}^N a_i \{ y_i \cdot ( w^Tx_i - w_o) - 1 \}  \\\ &=& \dfrac{1}{2} \left( \sum_{i=1}^N a_i y_i x_i \right)^T \left( \sum_{j=1}^N a_j y_j x_j \right) - \sum_{i=1}^N a_i  \end{eqnarray} %]]></script>
+
+<script type="math/tex; mode=display">\left\{ \right\}</script>
+
+<p>정리하면 다음과 같다.</p>
+
+<script type="math/tex; mode=display">L = \sum_{i=1}^N a_i - \dfrac{1}{2}\sum_{i=1}^N\sum_{j=1}^N a_i a_j y_i y_j x_i^T x_j</script>
+
+<p>이 때 $a$ 는 다음 조건을 만족한다.</p>
+
+<script type="math/tex; mode=display">\sum_{i=1}^N a_i y_i = 0</script>
+
+<script type="math/tex; mode=display">a_i \ge 0 \;\;\; (i = 1, \cdots, N)</script>
+
+<p>이 식을 최소화하는 $a$ 를 찾으면 예측 모형을 다음과 같이 나타낼 수 있다.</p>
+
+<script type="math/tex; mode=display">f(x) = w^T x - w_0 = \sum_{i=1}^N a_i y_i x_i^T x - w_0</script>
+

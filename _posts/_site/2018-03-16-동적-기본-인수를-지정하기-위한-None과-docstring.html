@@ -1,0 +1,126 @@
+<h2 id="none과-docstring을-통한-동적-기본-인수-지정"><code class="highlighter-rouge">None</code>과 <code class="highlighter-rouge">docstring</code>을 통한 동적 기본 인수 지정</h2>
+
+<blockquote>
+  <p>출처: 파이썬 코딩의 기술 (브렛 슬라킨, 길벗)</p>
+</blockquote>
+
+<p>이벤트 발생 시각을 포함해 로깅 메시지를 출력하려고 다음 함수를 작성하고 실행했다.</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># print time and message 1</span>
+
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">when</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"{}: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">when</span><span class="p">,</span> <span class="n">message</span><span class="p">))</span>
+    
+<span class="n">log</span><span class="p">(</span><span class="s">"Hi there!"</span><span class="p">)</span>
+<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">log</span><span class="p">(</span><span class="s">"Hi again!"</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="mi">2018</span><span class="o">-</span><span class="mo">03</span><span class="o">-</span><span class="mo">04</span> <span class="mi">23</span><span class="p">:</span><span class="mi">33</span><span class="p">:</span><span class="mf">53.884102</span><span class="p">:</span> <span class="n">Hi</span> <span class="n">there</span><span class="err">!</span>
+<span class="mi">2018</span><span class="o">-</span><span class="mo">03</span><span class="o">-</span><span class="mo">04</span> <span class="mi">23</span><span class="p">:</span><span class="mi">33</span><span class="p">:</span><span class="mf">53.884102</span><span class="p">:</span> <span class="n">Hi</span> <span class="n">again</span><span class="err">!</span>
+</code></pre>
+</div>
+
+<p>이벤트 발생 시각을 포함해 로깅 메시지를 출력하려고 시도했지만 <code class="highlighter-rouge">datetime.now</code>는 함수를 정의할 때 딱 한 번만 실행되므로 타임스탬프가 동일하게 출력됨. 모듈이 로드된 후에는 기본 인수인 <code class="highlighter-rouge">datetime.now</code>는 다시 평가되지 않는다. 이를 목적대로 실행하기 위해서는 기본값을 <code class="highlighter-rouge">None</code>으로 설정하고 <code class="highlighter-rouge">docstring</code>으로 실제 동작을 문서화하는게 관례이다.</p>
+
+<p>다시 함수를 작성하고 실행하면 의도했던대로 잘 동작한다.</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># print time and message 2</span>
+
+<span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">when</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="s">"""Log message with a timestamp
+    
+    Args:
+        message: Message to print.
+        when: datetime of when the message occurred.
+            Defaults to the present time.
+    """</span>
+    <span class="n">when</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="k">if</span> <span class="n">when</span> <span class="ow">is</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">when</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"{}: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">when</span><span class="p">,</span> <span class="n">message</span><span class="p">))</span>
+    
+<span class="n">log</span><span class="p">(</span><span class="s">"Hi there!"</span><span class="p">)</span>
+<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">log</span><span class="p">(</span><span class="s">"Hi again!"</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="mi">2018</span><span class="o">-</span><span class="mo">03</span><span class="o">-</span><span class="mo">04</span> <span class="mi">23</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mf">00.842097</span><span class="p">:</span> <span class="n">Hi</span> <span class="n">there</span><span class="err">!</span>
+<span class="mi">2018</span><span class="o">-</span><span class="mo">03</span><span class="o">-</span><span class="mo">04</span> <span class="mi">23</span><span class="p">:</span><span class="mi">39</span><span class="p">:</span><span class="mf">00.945287</span><span class="p">:</span> <span class="n">Hi</span> <span class="n">again</span><span class="err">!</span>
+</code></pre>
+</div>
+
+<p><strong>핵심 정리</strong></p>
+
+<ul>
+  <li>기본 인수는 모듈 로드 시점에 함수 정의 과정에서 딱 한 번만 평가됨. 그래서 동적 값에는 이상하게 동작하는 원인이 되기도 함</li>
+  <li>값이 동적인 키워드 인수에는 기본값으로 <code class="highlighter-rouge">None</code>을 사용하고, docstring을 통해 실제 동작을 문서화</li>
+</ul>
+
+<p>비슷한 예로, JSON 포맷의 데이터를 불러와 딕셔너리 형태로 생성하는 코드를 작성하면 다음과 같다.</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># JSON 데이터로 인코드된 값을 로드</span>
+<span class="c"># 데이터 디코딩이 실패하면 기본으로 빈 딕셔너리를 리턴</span>
+
+<span class="k">def</span> <span class="nf">decode</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">{}):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">except</span> <span class="nb">ValueError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">default</span>
+</code></pre>
+</div>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># 하나를 수정하면 다른 하나도 수정됨</span>
+
+<span class="n">foo</span> <span class="o">=</span> <span class="n">decode</span><span class="p">(</span><span class="s">'bad data'</span><span class="p">)</span>
+<span class="n">foo</span><span class="p">[</span><span class="s">'stuff'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">bar</span> <span class="o">=</span> <span class="n">decode</span><span class="p">(</span><span class="s">'also bad'</span><span class="p">)</span>
+<span class="n">bar</span><span class="p">[</span><span class="s">'meep'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Foo: "</span><span class="p">,</span> <span class="n">foo</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Bar: "</span><span class="p">,</span> <span class="n">bar</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">Foo</span><span class="p">:</span>  <span class="p">{</span><span class="s">'stuff'</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s">'meep'</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="n">Bar</span><span class="p">:</span>  <span class="p">{</span><span class="s">'stuff'</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s">'meep'</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+</code></pre>
+</div>
+
+<p>이 함수 역시 의도했던대로 동작하게 하려면 <code class="highlighter-rouge">None</code>을 이용한다.</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">decode</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="s">"""Load JSON data from a string.
+    
+    Args:
+        data: JSON data to decode.
+        default: Value to return if decoding fails.
+            Defaults to an empty dictionary.
+    """</span>
+    <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">default</span> <span class="o">=</span> <span class="p">{}</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">except</span> <span class="nb">ValueError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">default</span>
+</code></pre>
+</div>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">foo</span> <span class="o">=</span> <span class="n">decode</span><span class="p">(</span><span class="s">'bad data'</span><span class="p">)</span>
+<span class="n">foo</span><span class="p">[</span><span class="s">'stuff'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">bar</span> <span class="o">=</span> <span class="n">decode</span><span class="p">(</span><span class="s">'also bad'</span><span class="p">)</span>
+<span class="n">bar</span><span class="p">[</span><span class="s">'meep'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Foo: "</span><span class="p">,</span> <span class="n">foo</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Bar: "</span><span class="p">,</span> <span class="n">bar</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">Foo</span><span class="p">:</span>  <span class="p">{</span><span class="s">'stuff'</span><span class="p">:</span> <span class="mi">5</span><span class="p">}</span>
+<span class="n">Bar</span><span class="p">:</span>  <span class="p">{</span><span class="s">'meep'</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">None</code>을 이용하면 의도했던대로 잘 동작하는 것을 확인할 수 있다.</p>
