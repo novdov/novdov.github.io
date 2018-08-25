@@ -43,7 +43,7 @@
   <li>추상 구문 트리 $\rightarrow$ 바이트 코드</li>
 </ul>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># 예제 코드 test.py</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 예제 코드 test.py</span>
 <span class="c"># 두 인자를 더해 리턴하는 함수 func()와 두 전역변수 a, b</span>
 <span class="c"># a와 b를 받아 func()를 호출하고, 그 값을 c에 저장한 뒤 print() 함수로 출력</span>
 
@@ -55,18 +55,16 @@
 
 <span class="n">c</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">tokenize</span> <span class="kn">import</span> <span class="n">tokenize</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">tokenize</span> <span class="kn">import</span> <span class="n">tokenize</span>
 <span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
 
 <span class="n">s</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'test.py'</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 <span class="n">g</span> <span class="o">=</span> <span class="n">tokenize</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">))</span><span class="o">.</span><span class="n">readline</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">g</span><span class="p">:</span>
     <span class="k">print</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <pre><code class="language-Python">TokenInfo(type=59 (BACKQUOTE), string='utf-8', start=(0, 0), end=(0, 0), line='')
 TokenInfo(type=1 (NAME), string='def', start=(1, 0), end=(1, 3), line='def func(a, b):\n')
@@ -79,12 +77,11 @@ TokenInfo(type=0 (ENDMARKER), string='', start=(9, 0), end=(9, 0), line='')
 
 <p>이렇게 얻어진 토큰으로 분석 트리를 만든 다음, 추상 구문 트리로 변형</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># 추가: 아래 명령을 사용해서 Python에서 사용하는 토큰 종류를 확인할 수 있다.</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 추가: 아래 명령을 사용해서 Python에서 사용하는 토큰 종류를 확인할 수 있다.</span>
 
 <span class="kn">import</span> <span class="nn">token</span>
 <span class="n">token</span><span class="o">.</span><span class="n">tok_name</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><strong>3-2. 추상 구문 트리</strong></p>
 
@@ -93,14 +90,13 @@ TokenInfo(type=0 (ENDMARKER), string='', start=(9, 0), end=(9, 0), line='')
   <li>추상 구문 트리를 바탕으로 심벌 테이블, 바이트 코드를 생성할 수 있음</li>
 </ul>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">ast</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">ast</span>
 <span class="n">node</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s">"test.py"</span><span class="p">,</span> <span class="s">"exec"</span><span class="p">)</span> <span class="c"># 노드를 생성하고</span>
 <span class="n">g</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">node</span><span class="p">)</span> <span class="c"># walk 함수를 이용하면 트리의 모든 노드를 순회할 수 있는 제너레이터를 얻을 수 있음</span>
 <span class="k">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">))</span> <span class="c"># 제너레이터를 만든 다음 next를 통해 노드를 하나씩 획득</span>
 <span class="k">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">))</span>
 <span class="k">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">))</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <pre><code class="language-Python">&lt;_ast.Module object at 0x1a0fede828&gt;
 &lt;_ast.FunctionDef object at 0x1a0fede898&gt;
@@ -113,45 +109,40 @@ TokenInfo(type=0 (ENDMARKER), string='', start=(9, 0), end=(9, 0), line='')
   <li>심벌 테이블(symbol table): 변수나 함수의 이름과 그 속성에 대해 기술해 놓은 테이블</li>
 </ul>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">symtable</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">symtable</span>
 <span class="n">sym</span> <span class="o">=</span> <span class="n">symtable</span><span class="o">.</span><span class="n">symtable</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s">"test.py"</span><span class="p">,</span> <span class="s">"exec"</span><span class="p">)</span> <span class="c"># symtable로 테이블을 받아오고</span>
 <span class="k">print</span><span class="p">(</span><span class="n">sym</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span> <span class="c"># 이름을 확인 ('top': 이 테이블이 글로벌 테이블이라는 의미)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">sym</span><span class="o">.</span><span class="n">get_symbols</span><span class="p">())</span> <span class="c"># 현재 영역에 있는 심벌을 확인</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">top</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">top</span>
 <span class="p">[</span><span class="o">&lt;</span><span class="n">symbol</span> <span class="s">'func'</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">symbol</span> <span class="s">'a'</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">symbol</span> <span class="s">'b'</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">symbol</span> <span class="s">'c'</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">symbol</span> <span class="s">'print'</span><span class="o">&gt;</span><span class="p">]</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># 함수 func의 심벌테이블</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 함수 func의 심벌테이블</span>
 <span class="k">print</span><span class="p">(</span><span class="n">sym</span><span class="o">.</span><span class="n">get_children</span><span class="p">())</span> <span class="c"># 글로벌 심벌 테이블 내에 다른 심벌 테이블이 있는지 확인</span>
 <span class="n">func_sym</span> <span class="o">=</span> <span class="n">sym</span><span class="o">.</span><span class="n">get_children</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="c"># 테이블을 받아옴</span>
 <span class="k">print</span><span class="p">(</span><span class="n">func_sym</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span> <span class="c"># 심벌테이블의 이름은 func</span>
 <span class="k">print</span><span class="p">(</span><span class="n">func_sym</span><span class="o">.</span><span class="n">get_symbols</span><span class="p">())</span> <span class="c"># 심벌을 얻어오면 인자 a와 b를 볼 수 있음</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="p">[</span><span class="o">&lt;</span><span class="n">Function</span> <span class="n">SymbolTable</span> <span class="k">for</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">test</span><span class="o">.</span><span class="n">py</span><span class="o">&gt;</span><span class="p">]</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="o">&lt;</span><span class="n">Function</span> <span class="n">SymbolTable</span> <span class="k">for</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">test</span><span class="o">.</span><span class="n">py</span><span class="o">&gt;</span><span class="p">]</span>
 <span class="n">func</span>
 <span class="p">[</span><span class="o">&lt;</span><span class="n">symbol</span> <span class="s">'a'</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">symbol</span> <span class="s">'b'</span><span class="o">&gt;</span><span class="p">]</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><strong>3-4. 바이트 코드와 PVM</strong></p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># 바이트 코드를 생성</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 바이트 코드를 생성</span>
 
 <span class="kn">import</span> <span class="nn">dis</span>
 <span class="n">g</span> <span class="o">=</span> <span class="n">dis</span><span class="o">.</span><span class="n">get_instructions</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="c"># 바이트 코드를 제공하는 제너레이터 생성</span>
 <span class="k">for</span> <span class="n">inst</span> <span class="ow">in</span> <span class="n">g</span><span class="p">:</span>
     <span class="k">print</span><span class="p">(</span><span class="n">inst</span><span class="o">.</span><span class="n">opname</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span> <span class="s">" "</span><span class="p">)</span> <span class="c"># 바이트 코드 이름</span>
     <span class="k">print</span><span class="p">(</span><span class="n">inst</span><span class="o">.</span><span class="n">argval</span><span class="p">)</span> <span class="c"># 인자 값 출력, 바이트 코드 인스트럭션 확인</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">LOAD_CONST</span>           <span class="o">&lt;</span><span class="n">code</span> <span class="nb">object</span> <span class="n">func</span> <span class="n">at</span> <span class="mh">0x1a0fb57030</span><span class="p">,</span> <span class="nb">file</span> <span class="s">"&lt;disassembly&gt;"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="o">&gt;</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LOAD_CONST</span>           <span class="o">&lt;</span><span class="n">code</span> <span class="nb">object</span> <span class="n">func</span> <span class="n">at</span> <span class="mh">0x1a0fb57030</span><span class="p">,</span> <span class="nb">file</span> <span class="s">"&lt;disassembly&gt;"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="o">&gt;</span>
 <span class="n">LOAD_CONST</span>           <span class="n">func</span>
 <span class="n">MAKE_FUNCTION</span>        <span class="mi">0</span>
 <span class="n">STORE_NAME</span>           <span class="n">func</span>
@@ -170,12 +161,11 @@ TokenInfo(type=0 (ENDMARKER), string='', start=(9, 0), end=(9, 0), line='')
 <span class="n">POP_TOP</span>              <span class="bp">None</span>
 <span class="n">LOAD_CONST</span>           <span class="bp">None</span>
 <span class="n">RETURN_VALUE</span>         <span class="bp">None</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><strong>추가: PVM - CPython 소스 코드 중 ceval.c에 있는 PVM 일부 코드</strong></p>
 
-<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="n">PyObject</span><span class="o">*</span> <span class="n">_Py_HOT_FUNCTION</span>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">PyObject</span><span class="o">*</span> <span class="n">_Py_HOT_FUNCTION</span>
 <span class="nf">_PyEval_EvalFrameDefault</span><span class="p">(</span><span class="n">PyFrameObject</span> <span class="o">*</span><span class="n">f</span><span class="p">,</span> <span class="kt">int</span> <span class="n">throwflag</span><span class="p">)</span>
 <span class="p">{</span>
 
@@ -227,6 +217,5 @@ TokenInfo(type=0 (ENDMARKER), string='', start=(9, 0), end=(9, 0), line='')
         <span class="p">}</span>
         
 <span class="o">---------------</span> <span class="err">후략</span> <span class="o">---------------</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
