@@ -8,10 +8,6 @@ tags:
 - machine learning
 ---
 
-###### 2018. 04. 05
-
-## POS Tagging (품사 태깅)
-
 - Stanford Pos Tagger를 다운받고 modelr과 jar파일의 경로를 지정한 뒤, pos_tagger로 불러온다.
 - Stanford Pos Tagger Download Link: [Stanford Log-linear Part-Of-Speech Tagger](https://nlp.stanford.edu/software/tagger.html)
 
