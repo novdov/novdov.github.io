@@ -1,5 +1,5 @@
 ---
-title: ‘Stanford Pos Tagger를 이용한 POS Tagging'
+title: Stanford Pos Tagger를 이용한 POS Tagging
 date: 2018-04-05 17:24:27
 description: Stanford Pos Tagger를 이용해 POS tagging 방법을 간단하게 알아봅니다.
 categories:
