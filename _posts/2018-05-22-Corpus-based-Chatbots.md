@@ -29,7 +29,7 @@ IR 기반 챗봇의 원리는 사용자의 반응 $X$ 에 대해 말뭉치로부
 
 사용자 질의 $q$ 와 대화 말뭉치 $C$ 에 대해 $q$ 와 가장 유사한(코사인 유사도 등) $t$ 턴을 찾고 그에 이어지는 대답을 리턴한다.
 
-$$r = response \Bigl( \underset{t \in C}{\text{argmax}}\dfrac{q^Tt}{|| q || t ||} \Bigr)$$
+$$r = response \Bigl( \underset{t \in C}{\text{argmax}}\dfrac{q^Tt}{\| q \| t \|} \Bigr)$$
 
 
 
@@ -37,7 +37,7 @@ $$r = response \Bigl( \underset{t \in C}{\text{argmax}}\dfrac{q^Tt}{|| q || t ||
 
 사용자 질의 $q​$ 와 대화 말뭉치 $C​$ 에 대해 $q​$ 와 가장 유사한(코사인 유사도 등) $t​$ 를 리턴한다. 즉 사용자의 질의에 바로 그에 맞는 대답을 리턴한다. 좋은 대답은 일정 단어나 문맥 의미를 공유한다는 아이디어이다.
 
-$$r =   \underset{t \in C}{\text{argmax}}\dfrac{q^Tt}{|| q || t ||}$$
+$$r =   \underset{t \in C}{\text{argmax}}\dfrac{q^Tt}{\| q \|  t \|}$$
 
 
 
