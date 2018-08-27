@@ -32,4 +32,26 @@ tags:
 
 ### Model
 
-- 
+- DeepMoji 모델 구성은 다음과 같다.
+  - Embedding (256 dim) & tanh (L2 regularization of 1E-6)
+  - 2 bi-LSTM (1024 dim, 512 dim each)
+  - Attention layer
+
+![](https://i.imgur.com/112C7M6.png)
+
+### Transfer Learning
+
+- pretrain 된 모델은 transfer learning을 통해 목적 작업에 적용될 수 있는데, 본 논문에서는 “chain-thaw”라는 간단한 접근법을 소개한다. “chain-thaw” 방법은 순차적으로 가중치를 고정하고, 한번에 하나의 레이어만 업데이트하는 방법이다.
+- 구체적으로는 먼저 어느 한 레이어를 학습시키고, (보통 Softmax 레이어) 그 다음 첫 번째 레이어부터 순차적으로 업데이트한다. 마지막에는 모든 레이어가 업데이트된다.
+- chain-thaw을 통해 오버피팅의 리스크를 줄이면서 어휘를 새로운 도메인으로 확장할 수 있다.
+
+![](https://i.imgur.com/jZfN6DA.png)
+
+
+
+## Experiments
+
+### Emoji prediction
+
+
+
