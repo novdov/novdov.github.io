@@ -74,3 +74,8 @@ tags:
 
 - 논문에서는 5개 도메인의 8개 데이터를 이용해 3개의 NLP 작업을 수행해 모델의 벤치마크 성능을 평가했다.
 - 평가 metric으로는 감정 분석과 sarcasm에는 F1이, 감성 분류에는 정확도가 사용되었다.
+
+![](https://i.imgur.com/EtJLLUw.png)
+
+- 벤치마킹 결과는 chain-thaw 방법을 활용한 DeepMoji 모델은 state-of-the-art 모델보다 모든 데이터셋에서 더 높은 성능을 보였다. 벤치마킹 결과는 DeepMoji의 좋은 성능에는 chain-thaw 영향이 크다는 것을 말해준다.
+
