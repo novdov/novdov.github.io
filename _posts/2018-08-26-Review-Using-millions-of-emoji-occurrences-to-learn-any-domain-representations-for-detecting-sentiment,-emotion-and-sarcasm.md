@@ -92,3 +92,7 @@ tags:
 
 ## Conclusion
 
+- 이 논문은 이모지를 이용해 감정 정보를 학습했고, 개선된 transfer learning으로 NLP 작업에서의 성능을 개선했다. DeepMoji 모델 또한 감정이라는 context를 학습한 contextualized embedding이라고도 볼 수 있을 것 같다.
+- 또한 살펴볼 것은, 2-layer BiLSTM과 어텐션 메커니즘, skip connections의 사용이다. 최근 소개되는 state-of-the-art 모델들은 거의 대부분 어텐션 메커니즘이 추가된 BiLSTM을 이용하고 있다. 그만큼 NLP 작업에서 BiLSTM과 어텐션 메커니즘의 성능이 뛰어나다는 것일 것이다.
+- 다만, 이러한 큰 네트워크를 학습하기 위해서는 그만큼 풍부한 데이터도 중요하다고 생각한다. State-of-the-art contextualized embedding인 ELMo의 경우에도 4096 차원의 아주 큰 BiLSTM과 1B token dataset을 이용한 CNN을 이용한다. 결국 context 학습이 최종 목적이 아니라, 이 모델을 다르 작업에 transfer learning으로 적용하자고 하는 것이기 때문에 더더욱 그럴 것이라고 생각한다. CV 분야에서도 미리 학습된 VGG 등을 이용해 transfer learning을 적용하는 것과 궤를 같이 한다고 생각한다.
+- 그러나 여기서 한국어 NLP에 적용하기 위한 한계점도 있는데, 영어권 자료에 비해 대규모 한국어 데이터셋은 공개된 것이 많이 부족하다는 것이다. 세종 코퍼스는 2000년대 초반에 종료된 프로젝트이며, 그 양도 많지 않아 아쉬울 뿐이다.
