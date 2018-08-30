@@ -10,14 +10,13 @@ tags:
 - deep learning
 ---
 
-> Bjarke Felbo, Alan Mislove, Anders Søgaard, Iyad Rahwan, Sune Lehmann. 2017. Using millions of emoji occurrences to learn any-domain representations for detecting sentiment, emotion and sarcasm. ACL 2017, pages 1615–1625
+> [Bjarke Felbo, Alan Mislove, Anders Søgaard, Iyad Rahwan, Sune Lehmann. 2017. Using millions of emoji occurrences to learn any-domain representations for detecting sentiment, emotion and sarcasm. ACL 2017, pages 1615–1625](https://arxiv.org/abs/1708.00524)
 
 ## Introduction
 
 - 레이블링 된 데이터의 부족으로 NLP 작업이 제한되는 경우가 있다. 이런 이유로 문장에 나타나는 감정 표현은 소셜 미디어 감성 분석과 연관 작업에서 representation을 학습하는 데에 유용하게 사용되고 있다.
 - 이를 이용한 State-of-the-art 접근법으로는 소셜 미디어 감성 분석에 긍정/부정 이모티콘을 사용했고 (Deriu et al., 2016; Tang et al., 2014), 이와 비슷하게 #anger, #joy 같은 해시태그를 사용해 감정 분석에 접근한 방법도 있다. (Mohammad, 2012)
 - 노이즈가 섞인 레이블을 이용한 Distant supervision은 많은 경우에 모델의 성능을 향상시킨다. 본 논문에서는 더 다양한 노이즈가 섞인 레이블로 Distant supervision을 확장하고, 이러한 시도가 텍스트에서 더 풍부한 감정 representation 학습을 가능케 했다. (DeepMoji) 본 논문에서는 단일 pretrained model을 5가지 도메인으로 일반화한다.
-
 
 
 ## Method
@@ -65,9 +64,7 @@ tags:
 
 - fastText만 사용한 모델은 DeepMoji의 임베딩 레이어만 사용한 것과 동일한 결과를 냈다. 한편, fastText와 DeepMoji의 Top 5 정확도 차이는 이모지 예측의 어려움을 보여준다.
 - DeepMoji는 임베딩과 Softmax 레이어 사이에 어텐션 레이어가 있는 LSTM 레이어를 가지는데, 이 차이가 각 단어의 context를 잡아내는 데 중요한 역할을 했다고 말해준다.
-
 - 요즘의 모델들은 기본적으로 biLSTM과 어텐션 레이어 등을 포함하는데, (biLSTM은 거의 기본값이 된 듯 한다.) 이것은 그만큼 biLSTM과 어텐션의 성능이 NLP 작업에서 뛰어나다는 것을 보여준다고 생각한다.
-
 
 
 ## Benchmarking
@@ -80,14 +77,12 @@ tags:
 - 벤치마킹 결과는 chain-thaw 방법을 활용한 DeepMoji 모델은 state-of-the-art 모델보다 모든 데이터셋에서 더 높은 성능을 보였다. 벤치마킹 결과는 DeepMoji의 좋은 성능에는 chain-thaw 영향이 크다는 것을 말해준다.
 
 
-
 ## Model Analysis
 
 - DeepMoji와 이전의 distant supervison 방법들의 가장 큰 차이는 DeepMoji는 노이즈가 섞인 레이블을 다양하게 활용했다는 점이다. 다양한 이모지의 영향을 알아보기 위해 1/8로 줄인 이모지 데이터셋 (긍/부정)을 활용한 결과, 벤치마크 상의 성능은 데이터의 크기보다 레이블의 다양성과 더 연관이 있었다.
 - 이모지는 비슷한 감정을 나타내지만, 문맥마다 미묘한 차이를 나타낸다. DeepMoji는 이러한 미묘함을 학습했고, 이는 성능 향상으로 이어졌다는 것이다.
 
 - transfer learning 성능 향상에 대해 논문은 이렇게 추측한다. 1) skip connections를 적용한 어텐션 메커니즘 덕분에 모델이 어느 time step에서도 low-level features에 쉽게 접근해서 새로운 작업에 이용할 수 있다는 점, 2) 작은 데이터셋으로의 transfer learning에서 skip connections 덕분에 출력 레이어에서 초기 레이어로의 gradient 흐름이 개선된 점
-
 
 
 ## Conclusion
