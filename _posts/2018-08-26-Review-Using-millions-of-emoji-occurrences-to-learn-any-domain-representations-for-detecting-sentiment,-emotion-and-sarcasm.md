@@ -79,3 +79,16 @@ tags:
 
 - 벤치마킹 결과는 chain-thaw 방법을 활용한 DeepMoji 모델은 state-of-the-art 모델보다 모든 데이터셋에서 더 높은 성능을 보였다. 벤치마킹 결과는 DeepMoji의 좋은 성능에는 chain-thaw 영향이 크다는 것을 말해준다.
 
+
+
+## Model Analysis
+
+- DeepMoji와 이전의 distant supervison 방법들의 가장 큰 차이는 DeepMoji는 노이즈가 섞인 레이블을 다양하게 활용했다는 점이다. 다양한 이모지의 영향을 알아보기 위해 1/8로 줄인 이모지 데이터셋 (긍/부정)을 활용한 결과, 벤치마크 상의 성능은 데이터의 크기보다 레이블의 다양성과 더 연관이 있었다.
+- 이모지는 비슷한 감정을 나타내지만, 문맥마다 미묘한 차이를 나타낸다. DeepMoji는 이러한 미묘함을 학습했고, 이는 성능 향상으로 이어졌다는 것이다.
+
+- transfer learning 성능 향상에 대해 논문은 이렇게 추측한다. 1) skip connections를 적용한 어텐션 메커니즘 덕분에 모델이 어느 time step에서도 low-level features에 쉽게 접근해서 새로운 작업에 이용할 수 있다는 점, 2) 작은 데이터셋으로의 transfer learning에서 skip connections 덕분에 출력 레이어에서 초기 레이어로의 gradient 흐름이 개선된 점
+
+
+
+## Conclusion
+
