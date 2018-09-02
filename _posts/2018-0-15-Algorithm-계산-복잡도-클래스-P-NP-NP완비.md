@@ -1,5 +1,5 @@
 ---
-title: [Algorithm] 계산 복잡도 클래스: P, NP, NP완비
+title: '[Algorithm] 계산 복잡도 클래스: P, NP, NP완비'
 date: 2018-05-15 11:28:07
 categories:
 - Algorithm
