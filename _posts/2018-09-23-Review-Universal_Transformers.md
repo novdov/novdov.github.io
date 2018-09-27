@@ -24,7 +24,6 @@ tags:
 ![](https://i.imgur.com/Fc9cipx.png)
 
 
-
 ##  Model
 
 ### The Universal Transformer
@@ -32,10 +31,8 @@ tags:
 ![](https://i.imgur.com/zAP064b.png)
 
 - Universal Transformer는 sequence-to-sequence 모델에서 흔히 쓰이는 encoder-decoder 구조에 기반한다.  그러나 Universal Transformer는 시퀀스 위치를 순환하지 않고, 각 위치의 vector representaion의 연속적인 갱신(revision)을 순환한다는 점에서 기존의 RNN과 가장 큰 차이를 가진다. **즉 Universal Transformer는 시퀀스 내의 심볼 개수에 구애받지 않고, 각 심볼의 representaion의 업데이트 횟수에 귀속된다.**
-
 - 매 스텝마다 각 위치에서의 representation은 2단계에 걸쳐 갱신된다.
   - 먼저, Universal Transformer는 self-attention 메커니즘을 사용해 모든 위치에서 정보를 교환하고 각 위치의 representation을 생성한다. 이 representation은 이전 타임 스텝의 representation에 영향을 받는다.
-
   - 그 다음, 각 위치에서 독립적으로 self-attention 출력값에 *shared* transition을 적용한다. 이 점이 레이어를 쌓는 Transformer나 RNN 등 유명한 neural 시퀀스 모델과 가장 차별되는 점이다.
 
   $$
@@ -45,15 +42,10 @@ tags:
   $$
 
 - Encoder로는 $m$ 길이의 입력이 주어졌을 때, $d$ 차원의 임베딩으로 초기화된 행렬을 이용한다. ($H^0 \in \mathbb{R}^{m \times d}$) Universal Transformer는 그 다음 반복해서 $t$ 스텝에서의 $m$ 위치의 represantation $H^t$을 계산하는데, 이 때 multiheaded dot-product self-attention, recurrent transition을 적용한다. residual connection과 dropout, layer normalization 또한 함께 적용된다.
-
   - 작업에 따라 transition은 separable convolution이나 fully-connected NN (with relu) 중 하나가 사용된다.
-
 - $T$ 스텝 이후에 Universal Transformer의 최종 출력값은 입력 시퀀스의 $m$ 심볼의 $d$ 차원 representation 행렬이다. ($H^T \in \mathbb{R}^{m \times d}$)
-
 - Decoder는 기본적으로 encoder와 동일한 구조를 가진다. 하지만, decoder는 self-attention 이후에 decoder represention에서 얻은 쿼리 $Q$ 와 encoder representation을 projection해서 얻은 key/value $K, V$ 를 이용해 입력 시퀀스 각 위치의 최종 encoder representation $H^T$ 으로 향하는 attention을 추가로 계산한다.
-
 - 학습 동안 Decoder  입력은 encoder-decoder 구조와 동일하게 오른쪽으로 하나의 위치만큼 이동한 목표 출력이다.
-
 - 마지막으로 목표 심볼 distribution은 최종 decoder state에서 출력 사전 크기 $V$ 로 affine 변환 $O \in \mathbb{R}^{d \times V}$ 과 softmax를 통해 얻어진다.
 
 $$
@@ -63,7 +55,6 @@ $$
 ### The Adaptive Universal Transformer
 
 - 시퀀스 프로세싱 중에, 특정 심볼들은 다른 것들보다 모호할 때가 있어 이 심볼들을 처리하는 데 자원을 더 쏟는 것이 필요하다. 이 때 각 심볼에 필요한 계산량을 조절하는 ACT (Adaptive Computation Time)을 Universal Transformer에 적용한 것을  The Adaptive Universal Transformer라고 부른다.
-
 
 
 ## Experiments
@@ -84,15 +75,12 @@ $$
 ![](https://i.imgur.com/9vMSNMB.png)
 
 
-
 ### Subject-Verb Agreement
 
 - subjec와 verb 일치를 평가하는 태스크로, hierarchical (dependency) 구조를 얼마나 잘 잡아내는 지 확인하는 태스크이다.
-
 - Universal Transformer는 기존의 Transformer보다 나은 성능을 보였고, Adaptive Universal Transformer는 SOTA와 견줄만한 성능을 보였다.
 
 ![](https://i.imgur.com/UivpQHy.png)
-
 
 
 ### LAMBADA Language Modeling
@@ -103,14 +91,12 @@ $$
 ![](https://i.imgur.com/3uH0c6I.png)
 
 
-
 ### Algorithmic Tasks
 
 - Universal Transformer가 LSTM과 Transformer보다 나은 성능을 보였다.
 - Neural GPU가 완벽한 결과를 보이지만, 이는 특별한 과정이 추가되었기 때문이며, 다른 모델은 그렇지 않다.
 
 ![](https://i.imgur.com/nz9QN9a.png)
-
 
 
 ### Learning to Execute (LTE)
@@ -125,7 +111,6 @@ $$
 ![](https://i.imgur.com/loFRg0Y.png)
 
 
-
 ### Machine Translation
 
 - MT 태스크는 WMT 2014 영어-독일어로 평가되었다.
@@ -134,11 +119,9 @@ $$
 ![](https://i.imgur.com/NH8fGw1.png)
 
 
-
 ## Universality and Relationship to Other Models
 
 - Universal Transformer는 end-to-end Memory Network와도 관련되어 있다. 그러나 end-to-end Memory Network와는 다르게 Universal Transformer는 개별 입/출력 위치에 정렬된 스테이트에 해당하는 메모리를 사용한다. 또한, Universal Transformer는 encoder-decoder 구조를 따르며 대규모 sequence-to-sequence 태스크에서 좋은 성능을 보인다.
-
 
 
 ## Conclusion
@@ -150,10 +133,8 @@ $$
     - Universal Transformer는 ACT를 도입해 fixed-depth Universal Transformer보다 더 강력한 능력을 갖췄다. (The Adaptive Universal Transformer)
 
 
-
 ## Appendix
 
 ### Detailed Schema of the Universal Transformer
 
 ![](https://i.imgur.com/aX52RnY.png)
-
