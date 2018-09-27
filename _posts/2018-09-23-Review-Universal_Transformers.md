@@ -12,6 +12,7 @@ tags:
 ---
 
 > [Mostafa Dehghani et al., Universal Transformers., 2018](https://arxiv.org/abs/1807.03819)
+>
 > 해당 코드: https://github.com/tensorflow/tensor2tensor
 
 ## Introduction
