@@ -117,10 +117,12 @@ $$
 
 - 이 태스크는 컴퓨터 프로그램을 실행하도록 학습할 수 있는지 평가하는 문제이다.
 - Universal Transformer는 모든 태스크에서 완벽한 결과를 보였다.
+  - 위: char-acc (maximum length of 55)
+  - 아래: char-acc (maximum nesting of 2 nad length of 5)
 
-![char-acc (maximum length of 55)](https://i.imgur.com/NYneV7H.png)
+![](https://i.imgur.com/NYneV7H.png)
 
-![char-acc (maximum nesting of 2 nad length of 5)](https://i.imgur.com/loFRg0Y.png)
+![](https://i.imgur.com/loFRg0Y.png)
 
 
 
