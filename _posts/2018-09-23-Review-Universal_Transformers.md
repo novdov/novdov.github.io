@@ -1,5 +1,5 @@
 ---
-title: [Review] Universal Trnasformers
+title: '[Review] Universal Trnasformers'
 date: 2018-09-23 09:23:00
 description: 계산적으로 일반화하기 어렵고, RNN에 비해 간단한 태스크도 잘 처리 못했던 기존의 Trnaformer 모델을 개선한 Universal Transformers 모델을 소개한 논문을 리뷰합니다.
 categories:
