@@ -1,6 +1,6 @@
 ---
 title: '[Review] Universal Trnasformers'
-date: 2018-09-23 09:23:00
+date: 2018-09-27 09:23:00
 description: 계산적으로 일반화하기 어렵고, RNN에 비해 간단한 태스크도 잘 처리 못했던 기존의 Trnaformer 모델을 개선한 Universal Transformers 모델을 소개한 논문을 리뷰합니다.
 categories:
 - NLP
@@ -41,6 +41,7 @@ tags:
   $$
 
 - Encoder로는 $m$ 길이의 입력이 주어졌을 때, $d$ 차원의 임베딩으로 초기화된 행렬을 이용한다. ($H^0 \in \mathbb{R}^{m \times d}$) Universal Transformer는 그 다음 반복해서 $t$ 스텝에서의 $m$ 위치의 represantation $H^t$을 계산하는데, 이 때 multiheaded dot-product self-attention, recurrent transition을 적용한다. residual connection과 dropout, layer normalization 또한 함께 적용된다.
+
   - 작업에 따라 transition은 separable convolution이나 fully-connected NN (with relu) 중 하나가 사용된다.
 - $T$ 스텝 이후에 Universal Transformer의 최종 출력값은 입력 시퀀스의 $m$ 심볼의 $d$ 차원 representation 행렬이다. ($H^T \in \mathbb{R}^{m \times d}$)
 - Decoder는 기본적으로 encoder와 동일한 구조를 가진다. 하지만, decoder는 self-attention 이후에 decoder represention에서 얻은 쿼리 $Q$ 와 encoder representation을 projection해서 얻은 key/value $K, V$ 를 이용해 입력 시퀀스 각 위치의 최종 encoder representation $H^T$ 으로 향하는 attention을 추가로 계산한다.
