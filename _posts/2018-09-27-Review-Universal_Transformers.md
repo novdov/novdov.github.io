@@ -77,7 +77,7 @@ $$
 
 ### Subject-Verb Agreement
 
-- subjec와 verb 일치를 평가하는 태스크로, hierarchical (dependency) 구조를 얼마나 잘 잡아내는 지 확인하는 태스크이다.
+- subject와 verb 일치를 평가하는 태스크로, hierarchical (dependency) 구조를 얼마나 잘 잡아내는 지 확인하는 태스크이다.
 - Universal Transformer는 기존의 Transformer보다 나은 성능을 보였고, Adaptive Universal Transformer는 SOTA와 견줄만한 성능을 보였다.
 
 ![](https://i.imgur.com/UivpQHy.png)
