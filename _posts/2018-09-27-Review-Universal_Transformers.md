@@ -18,7 +18,7 @@ tags:
 ## Introduction
 
 - Transformer 모델 같은 convolutional & fully-attentional feed-forward 아키텍처는 최근 MT와 같은 시퀀스 모델링에서 RNN의 대체제로 떠올랐다. Transformer 모델은 self-attention 메커니즘을 통해 입출력 심볼의 context-informed vector-space representation을 학습한다. 이 representation은 모델이 symbol-by-symol로 출력 시퀀스를 예측하기 때문에, 서브시퀀트 심볼의 분산을 예측한다. Transformer 모델의 이러한 점은 병렬화하기 쉽고, 각 심볼의 representaion이 다른 심볼의 representaion에 의해 직접적인 정보를 담기 때문에, 효과적인 receptive field를 얻을 수 있다는 이점을 가져온다.
-- Transformer 모델은 반복적이고 재귀적인 transformation을 학습하는 RNN의 inductive bias에 앞서지만, 이 inductive bias가 언어의 복잡성을 학습하는데 중요한 역할을 한다는 것을 실험 결과가 보여준다. 이 때문에 transformer는 계산적으로 일반화하기 매우 어렵다. Universal Transformer는 이러한 단점들을 극복한다.
+- Transformer 모델은 반복적이고 재귀적인 transformation을 학습하는 RNN의 inductive bias에 앞서지만, 이 inductive bias가 언어의 복잡성을 학습하는데 중요한 역할을 한다는 것을 실험 결과가 보여준다. 이 때문에 Transformer는 계산적으로 일반화하기 매우 어렵다. Universal Transformer는 이러한 단점들을 극복한다.
 
 ![](https://i.imgur.com/Fc9cipx.png)
 
@@ -59,7 +59,7 @@ $$
 
 ## Experiments
 
-- Universal Transformer의 실험은 총 6가지 태스크를 통해 이뤄졌다. 각각은 다음과 같다. 
+- 논문에서는 총 6가지 태스크를 통해 Universal Transformer를 평가했다. 6가지 태스크는 아래와 같다. 
   - bAbI Question-Answering
   - Subject-Verb Agreement
   - LAMBADA Language Modeling
