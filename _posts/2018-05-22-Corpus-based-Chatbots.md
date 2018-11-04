@@ -5,8 +5,8 @@ description: 말뭉치 기반 챗봇은 규칙을 이용하는 대신 인간 간
 categories:
 - NLP
 tags:
-- machine learning
 - deep learning
+- nlp
 ---
 
 > 이 글은 stanford의 Dan Jurafsky and James H. Martin가 쓴 Speech and Language Processing (3rd ed. draft) 중 ch 29.[Dialog Systems and Chatbots](https://web.stanford.edu/~jurafsky/slp3/29.pdf)을 참고했습니다.
