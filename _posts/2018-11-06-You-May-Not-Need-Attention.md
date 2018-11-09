@@ -28,3 +28,5 @@ tags:
 
 ## Data Preprocessing
 
+논문에서 소개하는 preprocessing의 핵심은 **align**이다. 논문에서는 이를 위해 source/target sentence에 특정 속성을 요구한다.
+
