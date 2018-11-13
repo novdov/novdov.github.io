@@ -52,7 +52,29 @@ tags:
 ## Model
 
 - 매 타임 스텝마다 모델은 source 언어의 현재 입력 단어와 target 언어의 출력 단어를 각각 $E$ 차원으로 임베딩한다.   이 두 벡터는 $2E$ 차원으로 concat 된 뒤, multi-layer LSTM에 입력된다. LSTM의 출력은 FC layer를 이용해 $E$ 차원으로 변환된다. 이 벡터는 출력 임베딩과 softmax 를 이용해 target 사전의 distribution으로 변환된다. 모델은 또한 source 언어의 입력 임베딩, target 언어의 입력 임베딩, 출력 임베딩을 공유한다.
-- 논문에서 소개하는 모델은 Zaremba et al. (2014)의 recurrent language model과 매우 닮아 있다.
+- 논문에서 소개하는 모델은 Zaremba et al. (2014)의 recurrent language model과 매우 닮아 있다. 모델에서처럼, 논문에서도 teacher forcing과 cross-entropy loss를 사용한다. padding 심볼도 target sentence의 한 부분으로 다뤄졌고, 이를 위한 별도의 loss나 objective funtion은 사용되지 않았다.
+- 또한 다른 번역 모델과 달리 논문의 모델은 inference 중에 일정 양의 메모리만 사용한다. 메모리에 직전 히든 스테이트만 저장하고 인코딩된 이전 단어들의 representation은 저장하지 않는다. 이를 통해 decoding complexity는 최악의 경우 $\mathscr{O}(n+m)$ 이다.
+
+
+
+### Aligned Batching
+
+preprocessing 이후에 모든 source-target 쌍은 동일한 길이로 변한다. 논문에서는 이 다음 source 문장과 target 문장을 각각 순서를 유지한 string으로 합친다. 이를 통해 모델은 마치 language model을 학습하는 것처럼 학습할 수 있다. 구체적으로는 BPTT 하이퍼파라미터가 지정된다. 각 배치의 모든 요소는 BPTT source 토큰과 각각에 대응하는 target 토큰을 포함한다. language model을 학습할 때처럼, ($i-1$) 번째 배치의 마지막 히든 스테이트가 $i$ 번재 배치의 첫 히든 스테이트가 된다.
+
+
+
+### Decoding
+
+논문에서는 예측 (inference) 중에 출력의 질을 향상시키기 위해 beam search를 조정해 사용한다. 구체적인 조정은 다음과 같다.
+
+- Padding limit: 
+- Source padding injection (SPI):
+
+
+
+## Experiments
+
+
 
 
 
