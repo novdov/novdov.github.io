@@ -67,15 +67,33 @@ preprocessing 이후에 모든 source-target 쌍은 동일한 길이로 변한�
 
 논문에서는 예측 (inference) 중에 출력의 질을 향상시키기 위해 beam search를 조정해 사용한다. 구체적인 조정은 다음과 같다.
 
-- Padding limit: 
-- Source padding injection (SPI):
+- Padding limit: 논문에서는 $\epsilon$ 의 개수가 제한 개수에 다다르면 $\epsilon$ 의 등장 확률을 0으로 강제함으로써 패딩 토큰의 최대 개수에 제한을 두었다. 처음에 삽입되는 패딩 토큰은 이 제한 개수에 포함되지 않는다.
+- Source padding injection (SPI): 논문에서는 decoder가 source 언어의 EOS 토큰을 읽으면 이 EOS 토큰에 높은 확률을 부여한다는 것을 발견했다. 이에 논문에서는 SPI 파라미터를 $c$ 로 두었고, beam search에서는 0부터 $c$ 까지는 EOS 전까지를 $\epsilon$ 으로 간주한다. 
 
 
 
 ## Experiments
 
+### Setup
+
+- 실험은 EN ⟷ FR, EN ⟷ DE 로 이루어졌고, 학습/검증/테스트 데이터는 각각 WMT 2014, newstest2013, newstest2014를 이용했다. 각 문장은 토크나이징과 30,000 BPE opeartion을 거친다.
+- 네트워크의 구조는 먼저 4개의 LSTM 레이어 (1,000 units, embedding 500dim)를 이용한다. 학습 중 레이어와 임베딩에는 droutput이 적용된다. 배치 사이즈는 200, unroll step은 60이다. SGD를 사용했고, 첫 learning rate는 20이다. 논문에서는 6,500 스텝마다 검증 데이터에 대한 perplexity를 확인하고, 개선이 없으면 learning rate를 1/2로 줄인다.
 
 
 
+### Results
 
-  
+![% image-20181118151258738](../../../md_src/image-20181118151258738.png)
+
+- eager 모델은 EN ⟷ FR에 대해서는 레퍼런스 모델보다 최대 0.8% 낮은 BLEU를 보였다. 그러나 EN ⟷ DE 에서는 최대 4.8% 레퍼런스보다 낮은 성능을 보였따.
+
+![image-20181118151855679](../../../md_src/image-20181118151855679.png)
+
+- 문장 길이로 모델의 성능을 확인했을 때는 긴 문장에서는 eager 모델이 더 좋은 성능을 보였으나 짧은 문장에 대해서는 레퍼런스 모델보다 낮은 성능을 보였다. 이는 attention 기반의 방법이 짧은 문장 학습에 어려움을 보이기 떄문이다.
+
+
+
+## Conclusion
+
+- 논문에서 소개한 방법은 토크나이징 결과와, source/target 문장 간의 어순, 닮음새에 영향을 많이 받을 것으로 보인다. 특히 한국어/영어 같이 문장의 서술 구조의 차이가 큰 경우에는 align이 쉽지 않을 뿐더러, 높은 성능을 기대하기도 어려울 것 같다.
+- 다만 기존 NMT의 Encoder-Decoder 구조를 이용하지 않더라도 기존과 비슷한 성능을 보인다는 것은 모델의 구조 뿐만 아니라, 데이터 전처리 방법이 얼마나 중요한지 보여주는 대목이라고 생각된다.
