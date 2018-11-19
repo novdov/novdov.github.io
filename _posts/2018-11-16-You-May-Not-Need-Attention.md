@@ -83,11 +83,11 @@ preprocessing 이후에 모든 source-target 쌍은 동일한 길이로 변한�
 
 ### Results
 
-![% image-20181118151258738](../../../md_src/image-20181118151258738.png)
+![](https://i.imgur.com/f4HmYkX.png)
 
-- eager 모델은 EN ⟷ FR에 대해서는 레퍼런스 모델보다 최대 0.8% 낮은 BLEU를 보였다. 그러나 EN ⟷ DE 에서는 최대 4.8% 레퍼런스보다 낮은 성능을 보였따.
+- eager 모델은 EN ⟷ FR에 대해서는 레퍼런스 모델보다 최대 0.8% 낮은 BLEU를 보였다. 그러나 EN ⟷ DE 에서는 최대 4.8% 레퍼런스보다 낮은 성능을 보였다.
 
-![image-20181118151855679](../../../md_src/image-20181118151855679.png)
+  ![Imgur](https://i.imgur.com/k5O8rvO.png)
 
 - 문장 길이로 모델의 성능을 확인했을 때는 긴 문장에서는 eager 모델이 더 좋은 성능을 보였으나 짧은 문장에 대해서는 레퍼런스 모델보다 낮은 성능을 보였다. 이는 attention 기반의 방법이 짧은 문장 학습에 어려움을 보이기 떄문이다.
 
