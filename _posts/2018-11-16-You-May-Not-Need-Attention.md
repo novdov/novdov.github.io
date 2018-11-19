@@ -1,6 +1,6 @@
 ---
 title: '[Review] You May Not Need Attention'
-date: 2018-011-06 09:23:00
+date: 2018-11-16 09:23:00
 description: 최근 활발히 사용되고 있는 Attention을 적용하지 않은 NMT 모델을 소개한 논문을 리뷰합니다.
 categories:
 - NLP
