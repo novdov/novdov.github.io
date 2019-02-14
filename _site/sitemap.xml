@@ -2,63 +2,95 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     
     <url>
-        <loc>http://localhost:4000/python/2018/08/13/%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%89%E1%85%A6%E1%84%89%E1%85%B3%E1%84%8B%E1%85%AA-%E1%84%89%E1%85%B3%E1%84%85%E1%85%A6%E1%84%83%E1%85%B3-01-%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%89%E1%85%A6%E1%84%89%E1%85%B3%E1%84%8B%E1%85%AA-%E1%84%89%E1%85%B3%E1%84%85%E1%85%A6%E1%84%83%E1%85%B3/</loc>
+        <loc>http://localhost:4000/tensorflow/deep%20learning/2019/02/13/tf.Estimator-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0-01-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%A7%8C%EB%93%A4%EA%B8%B0/</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/machinelearning/2018/07/09/KKT-Karush-Kuhn-Tucker-%E1%84%8C%E1%85%A9%E1%84%80%E1%85%A5%E1%86%AB/</loc>
+        <loc>http://localhost:4000/nlp/deep%20learning/2018/11/16/You-May-Not-Need-Attention/</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/tutorial/2017/07/20/next-tutorial/</loc>
+        <loc>http://localhost:4000/nlp/deep%20learning/2018/09/27/Review-Universal_Transformers/</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/test/2017/07/19/highlight-test/</loc>
+        <loc>http://localhost:4000/deeplearning/nlp/2018/08/26/Review-Using-millions-of-emoji-occurrences-to-learn-any-domain-representations-for-detecting-sentiment,-emotion-and-sarcasm.md/</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/2015/09/19/emoji-test/</loc>
+        <loc>http://localhost:4000/python/2018/08/12/%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%89%E1%85%A6%E1%84%89%E1%85%B3%E1%84%8B%E1%85%AA-%E1%84%89%E1%85%B3%E1%84%85%E1%85%A6%E1%84%83%E1%85%B3-01-%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%89%E1%85%A6%E1%84%89%E1%85%B3%E1%84%8B%E1%85%AA-%E1%84%89%E1%85%B3%E1%84%85%E1%85%A6%E1%84%83%E1%85%B3/</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/photo/2014/11/19/gallery-post/</loc>
+        <loc>http://localhost:4000/machinelearning/2018/07/08/SVM-%E1%84%8B%E1%85%B5%E1%84%85%E1%85%A9%E1%86%AB%E1%84%8B%E1%85%B3%E1%86%AF-%E1%84%8C%E1%85%AE%E1%86%BC%E1%84%89%E1%85%B5%E1%86%B7%E1%84%8B%E1%85%B3%E1%84%85%E1%85%A9/</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/opinion/2014/02/16/Mathjax-with-jekyll/</loc>
+        <loc>http://localhost:4000/machinelearning/2018/07/08/KKT-Karush-Kuhn-Tucker-%E1%84%8C%E1%85%A9%E1%84%80%E1%85%A5%E1%86%AB/</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/2013/12/27/images/</loc>
+        <loc>http://localhost:4000/machinelearning/2018/07/04/Loss-Function-and-Gradient/</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/2013/12/25/excerpts/</loc>
+        <loc>http://localhost:4000/deeplearning/2018/07/02/Review-Searching-for-Activation-Functions/</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/foo/2013/12/25/block/</loc>
+        <loc>http://localhost:4000/deeplearning/2018/05/29/Batch-Normalization/</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/foo/2013/12/25/long-title/</loc>
+        <loc>http://localhost:4000/nlp/2018/05/24/PMI/</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/foo/bar/baz/2013/12/25/categories/</loc>
+        <loc>http://localhost:4000/nlp/2018/05/22/Corpus-based-Chatbots/</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/foo/2013/12/25/link-post/</loc>
+        <loc>http://localhost:4000/machinelearning/2018/05/18/%E1%84%92%E1%85%A2%E1%86%BC%E1%84%85%E1%85%A7%E1%86%AF%E1%84%8B%E1%85%B4-%E1%84%86%E1%85%B5%E1%84%87%E1%85%AE%E1%86%AB/</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/foo/2013/12/25/tags/</loc>
+        <loc>http://localhost:4000/algorithm/2018/05/18/Algorithm-%E1%84%8C%E1%85%A2%E1%84%80%E1%85%B1%E1%84%8B%E1%85%AA-%E1%84%8B%E1%85%AA%E1%86%AB%E1%84%8C%E1%85%A5%E1%86%AB-%E1%84%90%E1%85%A1%E1%86%B7%E1%84%89%E1%85%A2%E1%86%A8/</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/foo/2013/12/25/elements/</loc>
+        <loc>http://localhost:4000/algorithm/2018/05/16/Algorithm-%E1%84%89%E1%85%A1%E1%86%B8%E1%84%8B%E1%85%B5%E1%86%B8-%E1%84%8C%E1%85%A5%E1%86%BC%E1%84%85%E1%85%A7%E1%86%AF/</loc>
+    </url>
+    
+    <url>
+        <loc>http://localhost:4000/algorithm/2018/05/15/Algorithm-%E1%84%80%E1%85%A8%E1%84%89%E1%85%A1%E1%86%AB-%E1%84%87%E1%85%A9%E1%86%A8%E1%84%8C%E1%85%A1%E1%86%B8%E1%84%83%E1%85%A9-%E1%84%8F%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A2%E1%84%89%E1%85%B3-P-NP-NP%E1%84%8B%E1%85%AA%E1%86%AB%E1%84%87%E1%85%B5/</loc>
+    </url>
+    
+    <url>
+        <loc>http://localhost:4000/algorithm/2018/05/15/Algorithm-%E1%84%89%E1%85%B5%E1%84%80%E1%85%A1%E1%86%AB-%E1%84%87%E1%85%A9%E1%86%A8%E1%84%8C%E1%85%A1%E1%86%B8%E1%84%83%E1%85%A9%E1%84%8B%E1%85%AA-%E1%84%89%E1%85%AE%E1%84%92%E1%85%A2%E1%86%BC-%E1%84%89%E1%85%B5%E1%84%80%E1%85%A1%E1%86%AB/</loc>
+    </url>
+    
+    <url>
+        <loc>http://localhost:4000/machinelearning/2018/05/11/CART-%E1%84%92%E1%85%AE%E1%86%AB%E1%84%85%E1%85%A7%E1%86%AB-%E1%84%8B%E1%85%A1%E1%86%AF%E1%84%80%E1%85%A9%E1%84%85%E1%85%B5%E1%84%8C%E1%85%B3%E1%86%B7/</loc>
+    </url>
+    
+    <url>
+        <loc>http://localhost:4000/nlp/2018/04/05/NLP-POS-Tagging-%E1%84%91%E1%85%AE%E1%86%B7%E1%84%89%E1%85%A1-%E1%84%90%E1%85%A2%E1%84%80%E1%85%B5%E1%86%BC/</loc>
+    </url>
+    
+    <url>
+        <loc>http://localhost:4000/machinelearning/2018/04/01/%EA%B5%90%EC%B0%A8-%EA%B2%80%EC%A6%9D%EC%9D%98-%EC%A0%95%EB%B3%B4-%EB%88%84%EC%84%A4/</loc>
+    </url>
+    
+    <url>
+        <loc>http://localhost:4000/machine%20learning/2018/03/20/Mac-High-Sierra%E1%84%8B%E1%85%A6%E1%84%89%E1%85%A5-xgboost-%E1%84%89%E1%85%A5%E1%86%AF%E1%84%8E%E1%85%B5%E1%84%92%E1%85%A1%E1%84%80%E1%85%B5/</loc>
+    </url>
+    
+    <url>
+        <loc>http://localhost:4000/python/2018/03/18/%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%80%E1%85%B3%E1%84%85%E1%85%A2%E1%84%86%E1%85%B5%E1%86%BC-%E1%84%8B%E1%85%A5%E1%86%AB%E1%84%8B%E1%85%A5-%E1%84%8F%E1%85%A5%E1%86%B7%E1%84%91%E1%85%A1%E1%84%8B%E1%85%B5%E1%86%AF%E1%84%85%E1%85%A5-%E1%84%8B%E1%85%B5%E1%86%AB%E1%84%90%E1%85%A5%E1%84%91%E1%85%B3%E1%84%85%E1%85%B5%E1%84%90%E1%85%A5-%E1%84%8B%E1%85%A5%E1%86%AB%E1%84%8B%E1%85%A5/</loc>
+    </url>
+    
+    <url>
+        <loc>http://localhost:4000/python/2018/03/16/%E1%84%83%E1%85%A9%E1%86%BC%E1%84%8C%E1%85%A5%E1%86%A8-%E1%84%80%E1%85%B5%E1%84%87%E1%85%A9%E1%86%AB-%E1%84%8B%E1%85%B5%E1%86%AB%E1%84%89%E1%85%AE%E1%84%85%E1%85%B3%E1%86%AF-%E1%84%8C%E1%85%B5%E1%84%8C%E1%85%A5%E1%86%BC%E1%84%92%E1%85%A1%E1%84%80%E1%85%B5-%E1%84%8B%E1%85%B1%E1%84%92%E1%85%A1%E1%86%AB-None%E1%84%80%E1%85%AA-docstring/</loc>
     </url>
     
 
@@ -153,6 +185,14 @@
     
     <url>
         <loc>http://localhost:4000/page2/</loc>
+    </url>
+    
+    
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/page3/</loc>
     </url>
     
     

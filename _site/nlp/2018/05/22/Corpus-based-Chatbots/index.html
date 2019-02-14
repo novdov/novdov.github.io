@@ -1,0 +1,980 @@
+
+<!doctype html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/assets/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/assets/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/assets/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="deep learning,nlp," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="novdov's blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="말뭉치 기반 챗봇은 규칙을 이용하는 대신 인간 간 대화 혹은 인간-기계 간 대화에서의 인간의 반응을 학습한다. 보통 이용되는 말뭉치로는 Twitter, Weibo, 영화 대사 등이 있다. 말뭉치 기반 챗봇 시스템에는 두 타입이 있는데 하나는 정보 검색 기반(information retrieval based)이고 다른 하나는 시퀀스 변환 기반의 지도 학습 시스템이다.">
+<meta name="keywords" content="deep learning, nlp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Corpus-based Chatbots">
+<meta property="og:url" content="http://localhost:4000/nlp/2018/05/22/Corpus-based-Chatbots/">
+<meta property="og:site_name" content="novdov's blog">
+<meta property="og:description" content="말뭉치 기반 챗봇은 규칙을 이용하는 대신 인간 간 대화 혹은 인간-기계 간 대화에서의 인간의 반응을 학습한다. 보통 이용되는 말뭉치로는 Twitter, Weibo, 영화 대사 등이 있다. 말뭉치 기반 챗봇 시스템에는 두 타입이 있는데 하나는 정보 검색 기반(information retrieval based)이고 다른 하나는 시퀀스 변환 기반의 지도 학습 시스템이다.">
+<meta property="og:locale" content="en">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Corpus-based Chatbots">
+<meta name="twitter:description" content="말뭉치 기반 챗봇은 규칙을 이용하는 대신 인간 간 대화 혹은 인간-기계 간 대화에서의 인간의 반응을 학습한다. 보통 이용되는 말뭉치로는 Twitter, Weibo, 영화 대사 등이 있다. 말뭉치 기반 챗봇 시스템에는 두 타입이 있는데 하나는 정보 검색 기반(information retrieval based)이고 다른 하나는 시퀀스 변환 기반의 지도 학습 시스템이다.">
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://localhost:4000/"/>
+
+
+
+
+
+  <title>Corpus-based Chatbots | novdov's blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-103389358-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">novdov's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+<div id="posts" class="posts-expand">
+  
+  
+
+  
+
+  
+  
+  
+
+  <article class="post post-type- " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://localhost:4000/nlp/2018/05/22/Corpus-based-Chatbots/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sunwoong Kim">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="assets/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="novdov's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+          
+          
+            Corpus-based Chatbots
+          
+        </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-23T05:37:14+09:00">
+                2018-05-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/category/#/NLP" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/nlp/2018/05/22/Corpus-based-Chatbots/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="/nlp/2018/05/22/Corpus-based-Chatbots/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+            
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <blockquote>
+  <p>이 글은 stanford의 Dan Jurafsky and James H. Martin가 쓴 Speech and Language Processing (3rd ed. draft) 중 ch 29.<a href="https://web.stanford.edu/~jurafsky/slp3/29.pdf">Dialog Systems and Chatbots</a>을 참고했습니다.</p>
+</blockquote>
+
+<h2 id="corpus-based-chatbots">Corpus-based chatbots</h2>
+
+<p>말뭉치 기반 챗봇은 규칙을 이용하는 대신 인간 간 대화 혹은 인간-기계 간 대화에서의 인간의 반응을 학습한다. 보통 이용되는 말뭉치로는 Twitter, Weibo, 영화 대사 등이 있다.</p>
+
+<p>말뭉치 기반 챗봇 시스템에는 두 타입이 있는데 하나는 정보 검색 기반(information retrieval based)이고 다른 하나는 시퀀스 변환 기반의 지도 학습 시스템이다.</p>
+
+<h3 id="ir-based-chatbots">IR-based chatbots</h3>
+
+<p>IR 기반 챗봇의 원리는 사용자의 반응 $X$ 에 대해 말뭉치로부터 적절한 $Y$를 선택해 대응하는 것이다. 이는 말뭉치의 선택과 말뭉치로부터 어떤 것을 선택할지에 달려 있다. IR 기반 챗봇은 두 가지의 간단한 방법을 통해 말뭉치에서 적절한 답변을 선택한다.</p>
+
+<h4 id="1-사용자의-턴과-가장-유사한-턴에-대답-리턴">1) 사용자의 턴과 가장 유사한 턴에 대답 리턴</h4>
+
+<p>사용자 질의 $q$ 와 대화 말뭉치 $C$ 에 대해 $q$ 와 가장 유사한(코사인 유사도 등) $t$ 턴을 찾고 그에 이어지는 대답을 리턴한다.</p>
+
+<script type="math/tex; mode=display">r = response \Bigl( \underset{t \in C}{\text{argmax}}\dfrac{q^Tt}{\| q \| t \|} \Bigr)</script>
+
+<h4 id="2-가장-유사한-턴-리턴">2) 가장 유사한 턴 리턴</h4>
+
+<p>사용자 질의 $q​$ 와 대화 말뭉치 $C​$ 에 대해 $q​$ 와 가장 유사한(코사인 유사도 등) $t​$ 를 리턴한다. 즉 사용자의 질의에 바로 그에 맞는 대답을 리턴한다. 좋은 대답은 일정 단어나 문맥 의미를 공유한다는 아이디어이다.</p>
+
+<script type="math/tex; mode=display">r =   \underset{t \in C}{\text{argmax}}\dfrac{q^Tt}{\| q \|  t \|}</script>
+
+<p>각 케이스에서 단어나 임베딩에 대해 유사도 함수가 사용되는데 주로 코사인 유사도가 사용된다. 1)번이 좀 더 직관적인 알고리즘으로 보이지만 실제로는 2)번이 더 잘 동작한다. 대답을 위한 레이어가 추가적인 노이즈를 유발하기 때문이다.</p>
+
+<p>IR 기반 챗봇은 사용자의 질의 $q​$ 외에도 추가적인 변수를 사용하고 full IR 랭킹 접근 방식을 사용해 확장할 수 있다. IR 기반 챗봇의 상업적 접근에는 Cleverbot과 Microsoft의 ‘XioaIce’ (Little Bing, 小冰, 작은 얼음) 등이 있다.</p>
+
+<h3 id="sequence-to-sequence-chatbots">Sequence to sequence chatbots</h3>
+
+<p>다른 방법은 사용자의 이전 대화를 시스템의 턴으로 변환하는 것이다. Eliza의 머신러닝 버전이며, 질문을 대답으로 변환하는 것이다. 초기엔 구분 기반의 MT로 발전했으나 어려움을 겪는데, MT에서 입력 문장과 타겟 문장은 잘 매칭되지만 사용자 발화는 대답과 단어나 구문을 공유하지 않을 수도 있기 때문이다.</p>
+
+<p>그 대신 seq2seq 모델을 이용한 변환 기반의 대답 생성 모델이 제안되었다. 기본 seq2seq는 실전을 위해 몇 가지 수정을 거쳐야 하는데 기본 seq2seq 모델은 예측 가능하지만 반복적인, 따라서 조금은 멍청한 “I’m OK”나 “I don’t know” 등의 대답을 만들어내는 경향을 띠기 때문이다. 이는 목적 함수를 mutual information objective를 학습하도록 수정하거나 beam 디코더를 좀 더 다양한 대답을 유지하도록 수정하면 된다.</p>
+
+<p>또 하나의 문제는 이전 대화의 긴 문맥의 모델링인데 이는 이전 몇 개의 정보를 요약하는 등의 계층적 모델을 사용해 모델이 이전의 대화를 보도록 하면 된다.</p>
+
+<p>또한 SEQ2SEQresponse 모델은 단답만 생성해서 여러 턴에 걸쳐 응집된 대화를 생성하는 데는 좋지 않다. 이 점은 적대적 네트워크 같은 기술과 강화 학습을 통해 전체적으로 자연스러운 대화를 생성해내도록 함으로써 해결할 수 있다.</p>
+
+<h3 id="evaluating-chatbots">Evaluating Chatbots</h3>
+
+<p>챗봇은 일반적으로 사람이 평가한다. BLEU는 챗봇의 대답과 인간의 대답을 비교하는 데 안 좋은 성능을 보인다. 이는 하나의 턴에 대응 가능한 대답이 매우 많기 때문이다. 대답의 경우의 수가 적고 어휘적으로 겹치는 부분이 있다면 word-overlap metrics가 가장 좋은 평가 성능을 보인다.</p>
+
+<p>따라서 챗봇의 평가엔 인간의 개입이 필요하지만 자동 평가를 위한 모델이 제안되고 있다. ADEM은 인간이 그 적절성을 직접 평가한 대화 데이터를 이용했으며 대화 문맥과 시스템 대답의 단어로부터 태깅된 레이블을 예측하도록 학습했다. 또 하나의 패러다임은 adversarial evaluation이다. 이 패러다임의 아이디어는 기계가 만들어낸 대답과 인간이 만들어낸 대답 사이를 학습하는 것이다. 즉, 일반적인 GAN과 같이 시스템이 더 좋은 대답을 만들어낼 수록 그 성능은 개선되는 것이다.</p>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            
+            <a href="/tag/#/deep%20learning" rel="tag"># deep learning</a>
+          
+            
+            <a href="/tag/#/nlp" rel="tag"># nlp</a>
+          
+        </div>
+      
+
+      
+      
+      
+      
+      
+
+      
+      
+        <div class="post-nav" id="post-nav-id">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/nlp/2018/05/24/PMI/" rel="next" title="PMI">
+                <i class="fa fa-chevron-left"></i> PMI
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/machinelearning/2018/05/18/%ED%96%89%EB%A0%AC%EC%9D%98-%EB%AF%B8%EB%B6%84/" rel="prev" title="행렬의 미분 (Jacobian, Hessian)">
+                행렬의 미분 (Jacobian, Hessian) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+      
+
+      
+    </footer>
+  </article>
+
+  <div class="post-spread">
+    
+  </div>
+</div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        
+        
+        
+
+
+
+
+
+
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/assets/images/avatar.gif"
+               alt="Sunwoong Kim" />
+          <p class="site-author-name" itemprop="name">Sunwoong Kim</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+        
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              
+              
+              <span class="links-of-author-item">
+                <a href="https://github.com/novdov" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+
+
+
+
+
+
+
+            
+              <div class="post-toc-content">
+    <ol class=nav>
+      <li class="nav-item nav-level-2"> <a class="nav-link" href="#corpus-based-chatbots"> <span class="nav-number">1</span> <span class="nav-text">Corpus-based chatbots</span> </a> <ol class="nav-child"> <li class="nav-item nav-level-3"> <a class="nav-link" href="#ir-based-chatbots"> <span class="nav-number">1.1</span> <span class="nav-text">IR-based chatbots</span> </a> <ol class="nav-child"> <li class="nav-item nav-level-4"> <a class="nav-link" href="#1-사용자의-턴과-가장-유사한-턴에-대답-리턴"> <span class="nav-number">1.1.1</span> <span class="nav-text">1) 사용자의 턴과 가장 유사한 턴에 대답 리턴</span> </a> </li> <li class="nav-item nav-level-4"> <a class="nav-link" href="#2-가장-유사한-턴-리턴"> <span class="nav-number">1.1.2</span> <span class="nav-text">2) 가장 유사한 턴 리턴</span> </a> </li> </ol> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#sequence-to-sequence-chatbots"> <span class="nav-number">1.2</span> <span class="nav-text">Sequence to sequence chatbots</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#evaluating-chatbots"> <span class="nav-number">1.3</span> <span class="nav-text">Evaluating Chatbots</span> </a> </li> </ol> </li>
+    </ol>
+  </div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sunwoong Kim</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://jekyllrb.com">Jekyll</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/simpleyyt/jekyll-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+   
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/assets/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/assets/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/assets/js/src/post-details.js?v=5.1.1"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https://github.com/novdov.disqus.com/count.js" async></script>
+    
+
+    
+      
+      <script type="text/javascript">
+          var disqus_config = function () {
+              this.page.url = 'http://localhost:4000/nlp/2018/05/22/Corpus-based-Chatbots/';
+              this.page.identifier = '/nlp/2018/05/22/Corpus-based-Chatbots/';
+              this.page.title = 'Corpus-based Chatbots';
+          };
+          var d = document, s = d.createElement('script');
+          s.src = 'https://https://github.com/novdov.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', '' + +new Date());
+          (d.head || d.body).appendChild(s);
+      </script>
+      
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
+

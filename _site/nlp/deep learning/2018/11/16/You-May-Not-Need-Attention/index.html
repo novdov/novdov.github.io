@@ -1,0 +1,1045 @@
+
+<!doctype html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/assets/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/assets/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/assets/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="nlp,deep learning,review," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="novdov's blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="최근 활발히 사용되고 있는 Attention을 적용하지 않은 NMT 모델을 소개한 논문을 리뷰합니다.">
+<meta name="keywords" content="nlp, deep learning, review">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Review] You May Not Need Attention">
+<meta property="og:url" content="http://localhost:4000/nlp/deep%20learning/2018/11/16/You-May-Not-Need-Attention/">
+<meta property="og:site_name" content="novdov's blog">
+<meta property="og:description" content="최근 활발히 사용되고 있는 Attention을 적용하지 않은 NMT 모델을 소개한 논문을 리뷰합니다.">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://i.imgur.com/f4HmYkX.png">
+<meta property="og:image" content="https://i.imgur.com/k5O8rvO.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[Review] You May Not Need Attention">
+<meta name="twitter:description" content="최근 활발히 사용되고 있는 Attention을 적용하지 않은 NMT 모델을 소개한 논문을 리뷰합니다.">
+<meta name="twitter:image" content="https://i.imgur.com/f4HmYkX.png">
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://localhost:4000/"/>
+
+
+
+
+
+  <title>[Review] You May Not Need Attention | novdov's blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-103389358-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">novdov's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+<div id="posts" class="posts-expand">
+  
+  
+
+  
+
+  
+  
+  
+
+  <article class="post post-type- " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://localhost:4000/nlp/deep%20learning/2018/11/16/You-May-Not-Need-Attention/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sunwoong Kim">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="assets/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="novdov's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+          
+          
+            [Review] You May Not Need Attention
+          
+        </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-16T18:23:00+09:00">
+                2018-11-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/category/#/NLP" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+                  , 
+                
+              
+                
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/category/#/Deep%20Learning" itemprop="url" rel="index">
+                    <span itemprop="name">Deep Learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/nlp/deep%20learning/2018/11/16/You-May-Not-Need-Attention/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="/nlp/deep%20learning/2018/11/16/You-May-Not-Need-Attention/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+            
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 id="introduction">Introduction</h2>
+
+<p>최근 활발히 연구되고 있는 NMT 모델은 다음의 속성을 따른다.</p>
+
+<ul>
+  <li>Decoder는 source sequence representation에 대해 attention을 사용한다.</li>
+  <li>Encoder와 Decoder는 두 개의 다른 모듈이며, Encoder는 Decoder의 작동 전에 source sentence의 encoding을 마쳐야 한다.</li>
+</ul>
+
+<p>논문에서는 NMT 모델이 위의 속성 없이 얼마나 성능을 낼 수 있는지 확인한다. 논문은 기존의 Encoder-Decoder with attention 모델과 다른 구조로 NMT를 실험했고, 이 모델을 <strong>eager translation model</strong>이라고 부른다.</p>
+
+<p>이를 위해 논문에서는 Bahdanau et al. (2014)의 모델로 시작해 attention을 제거하고 Encoder와 Decoder를 하나의 간단한 모델로 합친다. 이 모델은 Zaremba et al. (2014)의 langaugae model을 닮았다. 이를 통해 논문의 모델은 source word가 입력되지마자 번역을 시작할 수 있다. Eager translation model은 일정 개수의 메모리만 사용하는데 이는 매 타임 스텝마다 직전 타임 스텝의 히든 스테이트만 이용하기 때문이다. 한편, 논문의 모델이 다른 모델과 가장 큰 차이점을 보이는 곳은 preprocessing이다.</p>
+
+<h2 id="data-preprocessing">Data Preprocessing</h2>
+
+<p>논문에서 소개하는 preprocessing의 핵심은 source/target 문장의 <strong>align</strong> (정렬)이다. 논문에서는 이를 위해 source/target sentence에 특정 속성을 요구한다.</p>
+
+<ul>
+  <li>source/target 문장의 대응 관계를 inferring 하는데, 이 때 각 target 단어는 최대 하나의 source 단어에 매칭된다. 그리고 정렬된 $(s_i, \boldsymbol{t}_j)$ 쌍이 $i \le j$ 를 만족하는 상태를 <em>eager feasible</em> 하다고 부른다.</li>
+</ul>
+
+<p>논문에서는 위의 속성을 만족시키기 위해 먼저 off-the-shelf 모델 (<code class="highlighter-rouge">fast_align</code>; <a href="http://www.aclweb.org/anthology/N13-1073">Dyer at el., 2013</a>) 을 사용해 source/target 문장 간의 대응을 예측한 뒤 최소한의 $\epsilon$ (empty) 토큰을 target 문장에 삽입한다. 이 $\epsilon$ 토큰은 학습과 예측 단계에서만 사용되고 실제 번역 문장을 만들어낼 때에는 제거된다.</p>
+
+<blockquote>
+  <p><code class="highlighter-rouge">fast_align</code> 모델은 source/target 문장 간 대응의 maximum likelihood를 log-linear 속도로 찾아내는 간단하고 빠른 모델이다.</p>
+</blockquote>
+
+<p>예를 들어 source 문장 “El perro blanco” (“The dog white”)의 올바른 번역은 “The white dog.”이다. 영어 문장의 두 번째 단어 (white)와 스페인 문장의 세 번째 단어가 분명하게 대응 (정렬)된다는 것을 가정하면 시퀀스를 eager feasible하게 만들기 위해 논문의 모델은 target 문장을 “The $\epsilon$ white dog.” 으로 변환한다.</p>
+
+<p>논문에서 소개하는 eager feasible 알고리즘은 아래와 같다.</p>
+
+<ul>
+  <li>source 문장을 $s = \langle s_1, \ldots, s_m \rangle$ , target 문장을 $\boldsymbol{t} = \langle t_1, \ldots, t_n \rangle$ 이라고 했을 때 $\mathcal{A}$ 를 정렬 쌍 $(i, j)$ 의 집합으로 둔다. ($t_j$ 가 $s_i$ 에 대응된다.)</li>
+  <li>target 문장을 왼쪽에서 오른쪽으로 살펴본다. 현재 target 단어가 $t$ 이고 현재의 위치는 $j$ 로 가정한다. $t$ 가 source 단어 $s_i$ 와 정렬되고 (에 대응하고) $i \le j$ 이면 다음 target 단어로 넘어간다. (정렬된 상태이므로)</li>
+  <li>
+    <p>그렇지 않을 경우 해당 target 단어 바로 앞에 $\epsilon$ 토큰을 삽입한다. 토큰 삽입으로 $t$ 는 target 문장에서 $i$ 위치로 이동한다. 물론, 다른 target 단어들도 오른쪽으로 이동한다.</p>
+  </li>
+  <li>또한 위의 작업을 조금 더 간단하게 하기 위해 논문에서는 모든 target 문장 앞에 $b \in { 0, 1, \ldots, 5 }$ 개의 $\epsilon$ 토큰을 미리 더한 뒤 실험했다. 이는 모델이 번역 전에 더 많은 source 문장을 소비하도록 한다. 즉 예측 시에 모델이 $b$ 개의 $\epsilon$ 을 번역 전에 만들어내도록 강제한다. 논문의 모델은 문장 앞의 $\epsilon$ 도 고려함으로써 target 문장 사이에 삽입해야 할 $\epsilon$ 의 개수를 줄인다.</li>
+  <li>위의 과정 후에 source/target 문장의 길이가 동일하지 않을 경우 짧은 문장 뒤에 $\epsilon$ 을 추가해 두 문장의 길이를 맞춘다.</li>
+</ul>
+
+<h2 id="model">Model</h2>
+
+<ul>
+  <li>매 타임 스텝마다 모델은 source 언어의 현재 입력 단어와 target 언어의 출력 단어를 각각 $E$ 차원으로 임베딩한다.   이 두 벡터는 $2E$ 차원으로 concat 된 뒤, multi-layer LSTM에 입력된다. LSTM의 출력은 FC layer를 이용해 $E$ 차원으로 변환된다. 이 벡터는 출력 임베딩과 softmax 를 이용해 target 사전의 distribution으로 변환된다. 모델은 또한 source 언어의 입력 임베딩, target 언어의 입력 임베딩, 출력 임베딩을 공유한다.</li>
+  <li>논문에서 소개하는 모델은 Zaremba et al. (2014)의 recurrent language model과 매우 닮아 있다. 모델에서처럼, 논문에서도 teacher forcing과 cross-entropy loss를 사용한다. padding 심볼도 target sentence의 한 부분으로 다뤄졌고, 이를 위한 별도의 loss나 objective funtion은 사용되지 않았다.</li>
+  <li>또한 다른 번역 모델과 달리 논문의 모델은 inference 중에 일정 양의 메모리만 사용한다. 메모리에 직전 히든 스테이트만 저장하고 인코딩된 이전 단어들의 representation은 저장하지 않는다. 이를 통해 decoding complexity는 최악의 경우 $\mathscr{O}(n+m)$ 이다.</li>
+</ul>
+
+<h3 id="aligned-batching">Aligned Batching</h3>
+
+<p>preprocessing 이후에 모든 source-target 쌍은 동일한 길이로 변한다. 논문에서는 이 다음 source 문장과 target 문장을 각각 순서를 유지한 string으로 합친다. 이를 통해 모델은 마치 language model을 학습하는 것처럼 학습할 수 있다. 구체적으로는 BPTT 하이퍼파라미터가 지정된다. 각 배치의 모든 요소는 BPTT source 토큰과 각각에 대응하는 target 토큰을 포함한다. language model을 학습할 때처럼, ($i-1$) 번째 배치의 마지막 히든 스테이트가 $i$ 번재 배치의 첫 히든 스테이트가 된다.</p>
+
+<h3 id="decoding">Decoding</h3>
+
+<p>논문에서는 예측 (inference) 중에 출력의 질을 향상시키기 위해 beam search를 조정해 사용한다. 구체적인 조정은 다음과 같다.</p>
+
+<ul>
+  <li>Padding limit: 논문에서는 $\epsilon$ 의 개수가 제한 개수에 다다르면 $\epsilon$ 의 등장 확률을 0으로 강제함으로써 패딩 토큰의 최대 개수에 제한을 두었다. 처음에 삽입되는 패딩 토큰은 이 제한 개수에 포함되지 않는다.</li>
+  <li>Source padding injection (SPI): 논문에서는 decoder가 source 언어의 EOS 토큰을 읽으면 이 EOS 토큰에 높은 확률을 부여한다는 것을 발견했다. 이에 논문에서는 SPI 파라미터를 $c$ 로 두었고, beam search에서는 0부터 $c$ 까지는 EOS 전까지를 $\epsilon$ 으로 간주한다.</li>
+</ul>
+
+<h2 id="experiments">Experiments</h2>
+
+<h3 id="setup">Setup</h3>
+
+<ul>
+  <li>실험은 EN ⟷ FR, EN ⟷ DE 로 이루어졌고, 학습/검증/테스트 데이터는 각각 WMT 2014, newstest2013, newstest2014를 이용했다. 각 문장은 토크나이징과 30,000 BPE opeartion을 거친다.</li>
+  <li>네트워크의 구조는 먼저 4개의 LSTM 레이어 (1,000 units, embedding 500dim)를 이용한다. 학습 중 레이어와 임베딩에는 droutput이 적용된다. 배치 사이즈는 200, unroll step은 60이다. SGD를 사용했고, 첫 learning rate는 20이다. 논문에서는 6,500 스텝마다 검증 데이터에 대한 perplexity를 확인하고, 개선이 없으면 learning rate를 1/2로 줄인다.</li>
+</ul>
+
+<h3 id="results">Results</h3>
+
+<p><img src="https://i.imgur.com/f4HmYkX.png" alt="" /></p>
+
+<ul>
+  <li>
+    <p>eager 모델은 EN ⟷ FR에 대해서는 레퍼런스 모델보다 최대 0.8% 낮은 BLEU를 보였다. 그러나 EN ⟷ DE 에서는 최대 4.8% 레퍼런스보다 낮은 성능을 보였다.</p>
+
+    <p><img src="https://i.imgur.com/k5O8rvO.png" alt="Imgur" /></p>
+  </li>
+  <li>
+    <p>문장 길이로 모델의 성능을 확인했을 때는 긴 문장에서는 eager 모델이 더 좋은 성능을 보였으나 짧은 문장에 대해서는 레퍼런스 모델보다 낮은 성능을 보였다. 이는 attention 기반의 방법이 짧은 문장 학습에 어려움을 보이기 떄문이다.</p>
+  </li>
+</ul>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<ul>
+  <li>논문에서 소개한 방법은 토크나이징 결과와, source/target 문장 간의 어순, 닮음새에 영향을 많이 받을 것으로 보인다. 특히 한국어/영어 같이 문장의 서술 구조의 차이가 큰 경우에는 align이 쉽지 않을 뿐더러, 높은 성능을 기대하기도 어려울 것 같다.</li>
+  <li>다만 기존 NMT의 Encoder-Decoder 구조를 이용하지 않더라도 기존과 비슷한 성능을 보인다는 것은 모델의 구조 뿐만 아니라, 데이터 전처리 방법이 얼마나 중요한지 보여주는 대목이라고 생각된다.</li>
+</ul>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            
+            <a href="/tag/#/nlp" rel="tag"># nlp</a>
+          
+            
+            <a href="/tag/#/deep%20learning" rel="tag"># deep learning</a>
+          
+            
+            <a href="/tag/#/review" rel="tag"># review</a>
+          
+        </div>
+      
+
+      
+      
+      
+      
+      
+
+      
+      
+        <div class="post-nav" id="post-nav-id">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/tensorflow/deep%20learning/2019/02/13/tf.Estimator-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0-01-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%A7%8C%EB%93%A4%EA%B8%B0/" rel="next" title="tf.estimator 사용하기 - 01. tf.data와 tf.record를 이용해 데이터 읽고 저장하기">
+                <i class="fa fa-chevron-left"></i> tf.estimator 사용하기 - 01. tf.data와 tf.record를 이용해 데이터 읽고 저장하기
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/nlp/deep%20learning/2018/09/27/Review-Universal_Transformers/" rel="prev" title="[Review] Universal Transformers">
+                [Review] Universal Transformers <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+      
+
+      
+    </footer>
+  </article>
+
+  <div class="post-spread">
+    
+  </div>
+</div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        
+        
+        
+
+
+
+
+
+
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/assets/images/avatar.gif"
+               alt="Sunwoong Kim" />
+          <p class="site-author-name" itemprop="name">Sunwoong Kim</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+        
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              
+              
+              <span class="links-of-author-item">
+                <a href="https://github.com/novdov" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+
+
+
+
+
+
+
+            
+              <div class="post-toc-content">
+    <ol class=nav>
+      <li class="nav-item nav-level-2"> <a class="nav-link" href="#introduction"> <span class="nav-number">1</span> <span class="nav-text">Introduction</span> </a> </li> <li class="nav-item nav-level-2"> <a class="nav-link" href="#data-preprocessing"> <span class="nav-number">2</span> <span class="nav-text">Data Preprocessing</span> </a> </li> <li class="nav-item nav-level-2"> <a class="nav-link" href="#model"> <span class="nav-number">3</span> <span class="nav-text">Model</span> </a> <ol class="nav-child"> <li class="nav-item nav-level-3"> <a class="nav-link" href="#aligned-batching"> <span class="nav-number">3.1</span> <span class="nav-text">Aligned Batching</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#decoding"> <span class="nav-number">3.2</span> <span class="nav-text">Decoding</span> </a> </li> </ol> </li> <li class="nav-item nav-level-2"> <a class="nav-link" href="#experiments"> <span class="nav-number">4</span> <span class="nav-text">Experiments</span> </a> <ol class="nav-child"> <li class="nav-item nav-level-3"> <a class="nav-link" href="#setup"> <span class="nav-number">4.1</span> <span class="nav-text">Setup</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#results"> <span class="nav-number">4.2</span> <span class="nav-text">Results</span> </a> </li> </ol> </li> <li class="nav-item nav-level-2"> <a class="nav-link" href="#conclusion"> <span class="nav-number">5</span> <span class="nav-text">Conclusion</span> </a> </li>
+    </ol>
+  </div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sunwoong Kim</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://jekyllrb.com">Jekyll</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/simpleyyt/jekyll-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+   
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/assets/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/assets/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/assets/js/src/post-details.js?v=5.1.1"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https://github.com/novdov.disqus.com/count.js" async></script>
+    
+
+    
+      
+      <script type="text/javascript">
+          var disqus_config = function () {
+              this.page.url = 'http://localhost:4000/nlp/deep%20learning/2018/11/16/You-May-Not-Need-Attention/';
+              this.page.identifier = '/nlp/deep%20learning/2018/11/16/You-May-Not-Need-Attention/';
+              this.page.title = '[Review] You May Not Need Attention';
+          };
+          var d = document, s = d.createElement('script');
+          s.src = 'https://https://github.com/novdov.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', '' + +new Date());
+          (d.head || d.body).appendChild(s);
+      </script>
+      
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
+

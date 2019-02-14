@@ -1,0 +1,973 @@
+
+<!doctype html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/assets/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/assets/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/assets/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="algorithm," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="novdov's blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="참고: 프로그래밍 대회에서 배우는 알고리즘 문제 해결 전략 (구종만 저)">
+<meta name="keywords" content="algorithm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Algorithm] 계산 복잡도 클래스: P, NP, NP완비">
+<meta property="og:url" content="http://localhost:4000/algorithm/2018/05/15/Algorithm-%EA%B3%84%EC%82%B0-%EB%B3%B5%EC%9E%A1%EB%8F%84-%ED%81%B4%EB%9E%98%EC%8A%A4-P-NP-NP%EC%99%84%EB%B9%84/">
+<meta property="og:site_name" content="novdov's blog">
+<meta property="og:description" content="참고: 프로그래밍 대회에서 배우는 알고리즘 문제 해결 전략 (구종만 저)">
+<meta property="og:locale" content="en">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[Algorithm] 계산 복잡도 클래스: P, NP, NP완비">
+<meta name="twitter:description" content="참고: 프로그래밍 대회에서 배우는 알고리즘 문제 해결 전략 (구종만 저)">
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://localhost:4000/"/>
+
+
+
+
+
+  <title>[Algorithm] 계산 복잡도 클래스: P, NP, NP완비 | novdov's blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-103389358-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">novdov's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+<div id="posts" class="posts-expand">
+  
+  
+
+  
+
+  
+  
+  
+
+  <article class="post post-type- " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://localhost:4000/algorithm/2018/05/15/Algorithm-%EA%B3%84%EC%82%B0-%EB%B3%B5%EC%9E%A1%EB%8F%84-%ED%81%B4%EB%9E%98%EC%8A%A4-P-NP-NP%EC%99%84%EB%B9%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sunwoong Kim">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="assets/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="novdov's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+          
+          
+            [Algorithm] 계산 복잡도 클래스: P, NP, NP완비
+          
+        </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-15T20:28:07+09:00">
+                2018-05-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/category/#/Algorithm" itemprop="url" rel="index">
+                    <span itemprop="name">Algorithm</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/algorithm/2018/05/15/Algorithm-%EA%B3%84%EC%82%B0-%EB%B3%B5%EC%9E%A1%EB%8F%84-%ED%81%B4%EB%9E%98%EC%8A%A4-P-NP-NP%EC%99%84%EB%B9%84/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="/algorithm/2018/05/15/Algorithm-%E1%84%80%E1%85%A8%E1%84%89%E1%85%A1%E1%86%AB-%E1%84%87%E1%85%A9%E1%86%A8%E1%84%8C%E1%85%A1%E1%86%B8%E1%84%83%E1%85%A9-%E1%84%8F%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A2%E1%84%89%E1%85%B3-P-NP-NP%E1%84%8B%E1%85%AA%E1%86%AB%E1%84%87%E1%85%B5/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+            
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <blockquote>
+  <p>참고: 프로그래밍 대회에서 배우는 알고리즘 문제 해결 전략 (구종만 저)</p>
+</blockquote>
+
+<h3 id="문제의-특성">문제의 특성</h3>
+
+<p>계산 복잡도 이론은 각 문제의 특성을 공부하는 학문이다. 다음 두 문제에 대해 살펴보자.</p>
+
+<ul>
+  <li>정렬 문제: 주어진 $N$개의 정수를 정렬한 결과는 무엇인가?</li>
+  <li>부분 집합 합(subset sum) 문제: $N$개의 수가 있을 때 이 중 몇 개를 골라내서 그들의 합이 $S$가 되도록 할 수 있는가?</li>
+</ul>
+
+<p>이 때 각 문제의 난이도는 문제를 풀 때의 난이도가 아니다. 계산 복잡도 이론에서 문제의 난이도는 문제를 풀 때의 난이도가 아니라 해당 문제를 해결하는 빠른 알고리즘이 있느냐를 나타낸다. 빠른 알고리즘이 있는 문제는 계산적으로 쉽고, 그렇지 않은 문제는 계산적으로 어렵다고 말한다. 그렇다면 ‘빠른’ 알고리즘이란 무엇일까? 일반적으로 다항 시간 알고리즘이나 그보다 빠른 알고리즘들만을 ‘빠르다’고 말한다.</p>
+
+<p>계산 복잡도 이론에서 이렇게 다항 시간 알고리즘이 존재하는 문제들의 집합을 P 문제라고 부른다. P 문제처럼 같은 성질을 갖는 문제들을 모아놓은 집합을 계산 복잡도 클래스(complexity class)라고 부른다. 그 중 중요한 것이 P, NP 문제이다.</p>
+
+<h3 id="난이도의-함정">난이도의 함정</h3>
+
+<p>그러나 어떤 문제를 다항 시간에 풀 수 있음을 증명하기는 쉽지만, 풀 수 없음을 보이기란 어렵다. 따라서 다항 시간 알고리즘이 존재하는 문제와 존재하지 않는 문제로 문제들을 구분하기엔 어렵다. 계산 복잡도에서 흔히 말하는 ‘어려운 문제’들은 다음과 같이 정의된다.</p>
+
+<ul>
+  <li>정말 어려운 문제를 잘 골라서 이것을 어려운 문제의 기준으로 삼는다.</li>
+  <li>앞으로는 기준 문제만큼 어렵거나 그보다 어려운 문제들 즉, ‘기준 이상으로 어려운 문제들’만을 어렵다고 부른다.</li>
+</ul>
+
+<p>하지만 이 기준에 따라 문제를 분류하려면 난관에 부딪힌다. 주어진 문제가 기준 이상으로 어려운지 판정하기가 쉽지 않기 때문이다. 문제 A가 문제 B 이상으로 어렵다고 말하려면 A를 푸는 가장 빠른 알고리즘이 B를 푸는 가장 빠른 알고리즘 이상의 시간이 걸려야 한다. 그러나 대부분의 경우 우리는 문제를 푸는 가장 빠른 알고리즘이 무엇인지 모른다.</p>
+
+<p>계산 복잡도 이론에서는 두 문제의 난이도를 비교하기 위해 환산(reduction)이라는 기법을 사용한다. 이는 한 문제를 다른 문제로 바꿔서 푸는 기법이다. B의 입력을 변형해 A의 입력으로 바꾸는 환산 알고리즘이 존재하면 A를 푸는 가장 빠른 알고리즘으로 B를 해결하는 알고리즘을 만들 수 있다. 환산 알고리즘의 실행 시간이 무시할 수 있을 정도로 빠르다고 하면 결합된 알고리즘은 A를 푸는 가장 빠른 알고리즘과 같은 시간이 걸릴 것이다. B를 푸는 가장 빠른 알고리즘은 이 결합된 알고리즘과 같거나 더 빠를 것이다. 결국 B를 푸는 가장 빠른 알고리즘은 A를 푸는 가장 빠른 알고리즘과 같거나 더 빠를 수 밖에 없다. 즉 A가 B 이상으로 어렵다는 것이다.</p>
+
+<h3 id="np-문제-np-난해-문제">NP 문제, NP 난해 문제</h3>
+
+<p>문제의 난이도를 비교할 수 있으니 어려운 문제의 기준을 정해야 한다. 이 때 어려운 문제의 기준이 되는 것이 바로 SAT 문제(satisfiability problem)이다. SAT 문제란 $N$개의 boolean 값 변수로 구성된 논리식을 참으로 만드는 변수 값들의 조합을 찾는 문제이다. SAT 문제는 모든 NP 문제 이상으로 어렵다.</p>
+
+<p>NP 문제란 답이 주어졌을 때 이것이 정답인지를 다항 시간 내에 확인할 수 있는 문제를 의미한다. 모든 P 문제들은 NP 문제에도 포함된다. SAT가 모든 NP 문제 이상으로 어렵다는 것은 SAT를 다항 시간에 풀 수 있으면 NP 문제들을 전부 다항 시간에 풀 수 있다는 말과 동일하다. 이런 속성을 갖는 문제들의 집합을 NP-난해(NP-Hard) 문제라고 부른다. NP-난해 문제들은 아직 다항 시간에 푸는 방법이 발견되지 않았다.</p>
+
+<p>NP-난해 문제이면서 NP인 문제들을 NP-완비(완전) 문제라고 한다.</p>
+
+<h3 id="pnp">P=NP</h3>
+
+<p>P=NP 문제는 P와 NP가 같은지를 확인하는 문제이다. NP-난해 문제 중 하나를 다항 시간에 풀 수 있다면 이 알고리즘을 이용해 NP에 속한 무든 문제를 다항 시간에 풀 수 있다. 이 경우 NP에 속한 모든 문제를 다항 시간에 해결할 수 있으므로 P=NP임을 알 수 있다. 반대로 NP문제 중 하나를 골라 다항 시간에 푸는 방법이 없음을 증명하면 P$\neq$NP임을 보일 수 있다. 이 문제는 아직까지 미해결 문제이다.</p>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            
+            <a href="/tag/#/algorithm" rel="tag"># algorithm</a>
+          
+        </div>
+      
+
+      
+      
+      
+      
+      
+
+      
+      
+        <div class="post-nav" id="post-nav-id">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/algorithm/2018/05/16/Algorithm-%EC%82%BD%EC%9E%85-%EC%A0%95%EB%A0%AC/" rel="next" title="[Algorithm] 삽입 정렬">
+                <i class="fa fa-chevron-left"></i> [Algorithm] 삽입 정렬
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/algorithm/2018/05/15/Algorithm-%EC%8B%9C%EA%B0%84-%EB%B3%B5%EC%9E%A1%EB%8F%84%EC%99%80-%EC%88%98%ED%96%89-%EC%8B%9C%EA%B0%84/" rel="prev" title="[Algorithm] 시간 복잡도와 수행 시간">
+                [Algorithm] 시간 복잡도와 수행 시간 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+      
+
+      
+    </footer>
+  </article>
+
+  <div class="post-spread">
+    
+  </div>
+</div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        
+        
+        
+
+
+
+
+
+
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/assets/images/avatar.gif"
+               alt="Sunwoong Kim" />
+          <p class="site-author-name" itemprop="name">Sunwoong Kim</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+        
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              
+              
+              <span class="links-of-author-item">
+                <a href="https://github.com/novdov" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+
+
+
+
+
+
+
+            
+              <div class="post-toc-content">
+    <ol class=nav>
+      <li class="nav-item nav-level-3"> <a class="nav-link" href="#문제의-특성"> <span class="nav-number">1</span> <span class="nav-text">문제의 특성</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#난이도의-함정"> <span class="nav-number">2</span> <span class="nav-text">난이도의 함정</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#np-문제-np-난해-문제"> <span class="nav-number">3</span> <span class="nav-text">NP 문제, NP 난해 문제</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#pnp"> <span class="nav-number">4</span> <span class="nav-text">P=NP</span> </a> </li>
+    </ol>
+  </div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sunwoong Kim</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://jekyllrb.com">Jekyll</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/simpleyyt/jekyll-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+   
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/assets/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/assets/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/assets/js/src/post-details.js?v=5.1.1"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https://github.com/novdov.disqus.com/count.js" async></script>
+    
+
+    
+      
+      <script type="text/javascript">
+          var disqus_config = function () {
+              this.page.url = 'http://localhost:4000/algorithm/2018/05/15/Algorithm-%EA%B3%84%EC%82%B0-%EB%B3%B5%EC%9E%A1%EB%8F%84-%ED%81%B4%EB%9E%98%EC%8A%A4-P-NP-NP%EC%99%84%EB%B9%84/';
+              this.page.identifier = '/algorithm/2018/05/15/Algorithm-%EA%B3%84%EC%82%B0-%EB%B3%B5%EC%9E%A1%EB%8F%84-%ED%81%B4%EB%9E%98%EC%8A%A4-P-NP-NP%EC%99%84%EB%B9%84/';
+              this.page.title = '[Algorithm] 계산 복잡도 클래스: P, NP, NP완비';
+          };
+          var d = document, s = d.createElement('script');
+          s.src = 'https://https://github.com/novdov.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', '' + +new Date());
+          (d.head || d.body).appendChild(s);
+      </script>
+      
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
+
