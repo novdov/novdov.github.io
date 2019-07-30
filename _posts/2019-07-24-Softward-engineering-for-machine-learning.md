@@ -26,7 +26,7 @@ MS는 Bing Search, Cortana, Microsoft Translator 등과 같은 제품에서 머�
 
 논문에서 스터디를 통해 말하고자 하는 점은 다음과 같습니다.
 
-![](../../../md_src/w5Vd5Yn.png)
+![](https://i.imgur.com/w5Vd5Yn.png)
 
 - MS 소프트웨어 팀이 머신러닝을 제품과 통합하기 위해 거치는 9가지 단계
 - 머신러닝을 이용하는 어플리케이션과 플랫폼을 만드는 best practice
@@ -41,11 +41,7 @@ MS는 Bing Search, Cortana, Microsoft Translator 등과 같은 제품에서 머�
 
 ![](https://i.imgur.com/IQUA9HX.png)
 
-
-
 설문은 인터뷰 결과를 바탕으로 설계되었습니다. 별표는 주관식  문항입니다.
-
-![](../../../md_src/IQUA9HX.png)
 
 
 
@@ -130,7 +126,6 @@ Varied Perceptions 섹션에서 보았듯이, AI 경험에 따라 중요하게 �
 연구자들은 연구 참여자들에게 가장 신경쓰고 있는 두 단계 (소요 시간)에 대해 응답할 것을 요청했습니다. 구체적으로는 각 단계에 대해 그렇다고 생각하는 정도를 평가할 것을 요청했습니다. (1: 매우 그렇지 않음, 5: 매우 그러함) 아래는 구체적인 문항입니다.
 
 - S1: My team has goals defined for what to accomplish with this activity.
-
 - S2: My team does this activity in a consistent manner.
 - S3: My team has largely documented the practices related to this activity.
 - S4: My team does this activity mostly in an automated way.
@@ -159,7 +154,7 @@ Varied Perceptions 섹션에서 보았듯이, AI 경험에 따라 중요하게 �
 
 ### Customization and Reuse
 
-ML 모델은 커스터마이징과 재사용에 코드보다 더 많은 노력을 들여야 합니다. 소프트웨어에서는 재사용 단위는 주로 함수, 알고리즘, 라이브러리, 모듈이며 이러한 것들ㅇ느 GitHub 등에서 쉽게 검색하고 재사용할 수 있습니다.
+ML 모델은 커스터마이징과 재사용에 코드보다 더 많은 노력을 들여야 합니다. 소프트웨어에서는 재사용 단위는 주로 함수, 알고리즘, 라이브러리, 모듈이며 이러한 것들은 GitHub 등에서 쉽게 검색하고 재사용할 수 있습니다.
 
 ML 모델 또한 하나의 함수로 볼 수 있지만 실은 훨씬 복잡합니다. 모델의 한쪽 면은 학습 알고리즘이고 다른 한쪽은 그 함수를 통제하는 파라미터 집합입니다. 그러나 모델을 다른 도메인에 적용하거나 다른 입력에 사용하려면 많은 부분들이 바뀌어야 합니다. 파라미터는 에디터로 쉽게 바뀌는 것도 아닙니다. 모델은 재학습이 필요하거나 아예 다른 모델을 사용해야 할 수도 있습니다.
 
