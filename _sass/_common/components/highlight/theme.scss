@@ -1,4 +1,5 @@
-$highlight_theme : jekyll-config("highlight_theme");
+// $highlight_theme : jekyll-config("highlight_theme");
+$highlight_theme: "night";
 
 
 @if $highlight_theme == "normal" {
