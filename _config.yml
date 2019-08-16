@@ -379,6 +379,8 @@ han: false
 # Duoshuo ShortName
 #duoshuo_shortname:
 
+disqus_shortname: https://github.com/novdov
+
 # Disqus
 disqus:
   enable: true
