@@ -96,7 +96,7 @@ client = brawlstats.Client(token)
 
 
 
-저장은 각 지표를 컬럼으로, 각 유저를 로우로 가지는 CSV 형태입니다. 이를 위해 각 로그를 파싱하는 헬퍼 함수를 정의합니다.
+목표하는 저장 형식은 각 지표를 컬럼으로, 각 유저를 로우로 가지는 csv 입니다. 이를 위해 각 로그를 파싱하는 헬퍼 함수를 정의합니다.
 
 ```python
 def parse_single_battle_log(battle_log: Mapping, tag: str):
