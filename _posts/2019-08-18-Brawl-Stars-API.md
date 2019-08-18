@@ -140,7 +140,7 @@ def parse_single_battle_log(battle_log: Mapping, tag: str):
 
 판다스로 첫 번째 전투 기록을 불러온 모습은 아래와 같습니다. 각 전투 식별은 `battle_time` 으로 합니다. 또한 기록에서 `result` 와 `team` 은 모두 제가 기준입니다. `team` 은 같은 팀이면 1, 상대 팀은 0으로 표시했고, 스타 플레이어 또한 0과 1로 표시했습니다.
 
-![](../../../md_src/BiXPgs7.png)
+![](https://i.imgur.com/BiXPgs7.png)
 
 
 
