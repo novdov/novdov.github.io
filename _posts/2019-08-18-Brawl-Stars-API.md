@@ -95,44 +95,109 @@ client = brawlstats.Client(token)
 저장할 형식은 각 지표를 컬럼으로, 각 유저를 로우로 가지는 csv 입니다. 이를 위해 먼저 각 로그를 파싱하는 헬퍼 함수를 정의합니다. (주의: 변수 타입 힌트는 파이썬 3.6 이상부터 사용할 수 있습니다.)
 
 ```python
-def parse_single_battle_log(battle_log: Mapping, tag: str) -> Optional[List[Mapping]]:
-     if battle_log["battle"]["mode"] in ["bigGame"]:
-         return None
+def parse_single_battle_log(
+        self,
+        battle_log: Mapping,
+        tag: str
+) -> Optional[Union[List[Mapping], int]]:
+    """Parse single battle log."""
 
-     info_list = []
-     battle_info = {
-         "mode": battle_log["battle"]["mode"],
-         "result": battle_log["battle"]["result"],
-         "duration": battle_log["battle"]["duration"],
-         "map": battle_log["event"]["map"],
-         "battle_time": battle_log["battleTime"],
-     }
+    match_cond = battle_log["battle"]["mode"] in self.TARGET_MATCHES
+    result_cond = "result" in battle_log["battle"]
+    type_cond = "type" in battle_log["battle"] and battle_log["battle"]["type"] == "ranked"
 
-     star_player = battle_log["battle"]["starPlayer"]["tag"]
+    if not all([match_cond, result_cond, type_cond]):
+        return None
 
-     teams: List[List[Mapping]] = battle_log["battle"]["teams"]
-     for team in teams:
+    hash_val = 0
+    parsed_log = []
+    battle_info = {
+        "mode": battle_log["battle"]["mode"],
+        "result": battle_log["battle"]["result"],
+        "duration": battle_log["battle"]["duration"],
+        "map": battle_log["event"]["map"],
+        "battle_time": battle_log["battleTime"],
+    }
 
-         players = [log["tag"][1:] for log in team]
-         side = 1 if tag in players else 0
+    star_player = battle_log["battle"]["starPlayer"]["tag"]
+    teams: List[List[Mapping]] = battle_log["battle"]["teams"]
 
-         for player in team:
-             team_info = {
-                 "brawler": player["brawler"]["name"],
-                 "brawler_power": player["brawler"]["power"],
-                 "brawler_trophies": player["brawler"]["trophies"],
-                 "name": player["name"],
-                 "tag": player["tag"],
-                 "team": side,
-                 "star_player": 1 if player["tag"] == star_player else 0
-             }
-             info_list.append({**battle_info, **team_info})
-     return info_list
+    hash_val += hash(battle_info["battle_time"])
+    for team in teams:
+        for player in team:
+            hash_val += hash(player["tag"][1:])
+
+    for team in teams:
+
+        players = [log["tag"][1:] for log in team]
+        side = 1 if tag in players else 0
+
+        for player in team:
+            team_info = {
+                "brawler": player["brawler"]["name"],
+                "brawler_power": player["brawler"]["power"],
+                "brawler_trophies": player["brawler"]["trophies"],
+                "name": player["name"],
+                "tag": player["tag"],
+                "team": side,
+                "star_player": 1 if player["tag"] == star_player else 0,
+                "hash": hash_val
+            }
+            parsed_log.append({**battle_info, **team_info})
+
+    return parsed_log, hash_val
 ```
 
 
 
-위의 함수를 이용해서 25건의 전투 기록을 파싱하고 csv로 저장합니다. 브롤스타즈의 전투 기록은 최근 25건까지만 저장되므로 주기적인 로그 저장을 위해 GCP의 VM 인스턴스를 띄운 뒤, 8시간마다 기록을 저장하도록 크론 작업을 설정해 주었습니다. VM 인스턴스는 저렴한 f1-micro(vCPU 1개, 0.6GB 메모리)로 설정했습니다.
+실제로는 `BrawlStatsLogger` 라는 클래스의 메서드로 위의 함수를 사용합니다. `self.cache`  는 각 전투 기록에 대한 해시값을 가지고 있는 `set` 입니다. 해시값은 `battleTime` 과 해당 전투에 참여한 모든 유저의 태그를 더한 값입니다.  각 유저의 모든 전투 기록을 저장할 때 `self.cache` 에 없는 기록만 저장합니다. 위의 함수를 이용해서 25건의 전투 기록을 파싱하고 csv로 저장합니다. 처음에 확인하는 조건은 1) 저장 대상 매치인지 (젬그랩, 하이스트, 바운티, 브롤볼 중 하나), 2) 결과가 기록에 표시되는지, 3) 랭크 게임인지를 확인하기 위한 조건들입니다.
+
+
+
+각 유저의 모든 전투 기록을 파싱하는 메서드는 아래와 같습니다.
+
+```python
+def parse_battle_logs(self, tag: str) -> List[Mapping]:
+    parsed_logs = []
+    raw_logs = self.get_battle_logs(tag)
+    for log in raw_logs:
+        parsed_log_hash_val = self.parse_single_battle_log(log, tag)
+        if parsed_log_hash_val is not None:
+            parsed_log, hash_val = parsed_log_hash_val
+            if hash_val not in self.cache:
+                self.cache.add(hash_val)
+                parsed_logs.extend(parsed_log)
+    return parsed_logs
+```
+
+
+
+파싱한 로그와 해시값을 이용해서, 해시값이 `self.cache` 에 없는 경우에만 저장합니다. 한 유저의 기록만 저장하기에는 그 수가 너무 적어서 처음에 인자로 입력해서 얻은 전투 기록을 순회하면서 등장하는 모든 유저의 전투 기록도 저장합니다. 아래의 메서드를 이용합니다.
+
+```python
+def parse_battle_logs_all_user(self, init_tag: str) -> List[Mapping]:
+    visited = {hash(init_tag)}
+    first_parsed_logs = self.parse_battle_logs(init_tag)
+
+    all_logs = []
+    all_logs.extend(first_parsed_logs)
+
+    for log in tqdm(first_parsed_logs):
+        tag = log["tag"][1:]
+        tag_hash = hash(tag)
+        if tag_hash not in visited:
+            visited.add(tag_hash)
+            all_logs.extend(self.parse_battle_logs(tag))
+    return all_logs
+```
+
+여기서도`visited` 를 이용해서 방문한 유저를 식별합니다. 전체 코드는 해당 [Github Repo](https://github.com/novdov/brawlstars-analysis) 에서 확인하실 수 있습니다. (파이썬 3.6 이상만 지원합니다.)
+
+
+
+## 3. 주기적으로 전투 기록 저장하기
+
+브롤스타즈의 전투 기록은 최근 25건까지만 저장되므로 주기적인 로그 저장을 위해 GCP의 VM 인스턴스를 띄운 뒤, 8시간마다 기록을 저장하도록 크론 작업을 설정해 주었습니다. 리눅스의 기본`crontab` 을 이용하면 됩니다. VM 인스턴스는 저렴한 f1-micro(vCPU 1개, 0.6GB 메모리)로 설정했습니다.
 
 전투 기록을 저장하고 판다스로 불러온 가장 최근 경기 기록은 아래와 같습니다. 각 전투 식별은 `battle_time` 으로 합니다. 또한 기록에서 `result` 와 `team` 은 모두 인자로 주어진`tag`  기준입니다. `team` 은 같은 팀이면 1, 상대 팀은 0으로 표시했고, 스타 플레이어 또한 0과 1로 표시했습니다.
 
@@ -142,5 +207,5 @@ def parse_single_battle_log(battle_log: Mapping, tag: str) -> Optional[List[Mapp
 
 ## 3. 마무리
 
-글에서는 제 플레이 데이터만 수집했지만, 실제로는 같인 플레이한 유저들의 데이터까지 수집해서 분석해보려고 합니다. 데이터가 어느 정도 모이면 간단하게라도 맵과 조합, 매칭 등에 대해서 살펴보려고 합니다.
+한번에 모인 데이터는 약 8900 건 정도 됩니다. 며칠 간 데이터를 모은 뒤 모인 데이터를 이용해서 맵과 조합, 매칭 등에 대해서 살펴보려고 합니다.
 
