@@ -1,7 +1,7 @@
 ---
-title: '브롤스타즈 전투 기록 Elasticsearch와 Kibana에 올리기'
+title: 'Elasticsearch와 Kibana로 브롤스타즈 전투 기록 분석 & 시각화 환경 구축'
 date: 2019-08-24 19:00:00
-description: 브롤스타즈 전투 기록을 Elasticsearch와 Kibana에 올려 확인합니다.
+description: Elasticsearch와 Kibana로 브롤스타즈 전투 기록을 분석하고 시각화 하기 위한 환경을 구축합니다.
 categories:
 - Data Anaylsis
 - ELK
