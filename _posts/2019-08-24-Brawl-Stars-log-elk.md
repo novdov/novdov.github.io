@@ -89,7 +89,7 @@ def create_index(es: Elasticsearch, index_name: str, body: dict):
 
 
 
-먼저 위의 함수를 이용해 인덱스를 생성합니다. 실제 인덱스는 아래왁 같이 생성했습니다. `Elasticsearch()` 클라이언트는 기본 설정인 `localhost:9200` 으로 연결됩니다.
+먼저 위의 함수를 이용해 인덱스를 생성합니다. 실제 인덱스는 아래와 같이 생성했습니다. `Elasticsearch()` 클라이언트는 기본 설정인 `localhost:9200` 으로 연결됩니다.
 
 ```python
 index_name = "brawlstars" 
