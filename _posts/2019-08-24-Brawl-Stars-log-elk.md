@@ -152,7 +152,9 @@ Kibana의 Visualize를 활용해 데이터를 시각화할 수 있습니다. 몇
 
 ### 브롤러 게임 모드별 선택 비율
 
-<iframe src="http://localhost:5601/app/kibana#/visualize/edit/5ee4ffa0-c5b1-11e9-b88d-c5acefe042a0?embed=true&_g=(filters%3A!())" height="600" width="800"></iframe>
+![](https://drive.google.com/uc?id=1rYRbyhnmrLuAw5lQCwJbw4qhkP32c2E9)
+
+
 
 지난번과 양상이 비슷하네요. 다만 쉘리의 바운티 플레이 비율이 더 늘어났습니다. 틱, 지니, 보, 포코 등은 여전히 젬그랩 플레이 비율이 높습니다.
 
@@ -160,7 +162,7 @@ Kibana의 Visualize를 활용해 데이터를 시각화할 수 있습니다. 몇
 
 ### 브롤러의 게임 모드별 승률
 
-<iframe src="http://localhost:5601/app/kibana#/visualize/edit/fabffa40-c5c7-11e9-b88d-c5acefe042a0?embed=true&_g=(filters%3A!())" height="600" width="800"></iframe>
+![](https://drive.google.com/uc?id=1t3WycCl9OQ7O-HxhFrY2fSB7FDwM6eFP)
 
 
 
