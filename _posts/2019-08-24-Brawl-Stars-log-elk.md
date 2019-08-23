@@ -58,7 +58,7 @@ def read_all_logs(data_dir):
         df_list.append(df[df["hash"].isin(unique_hashes)])
         total_hashes = total_hashes.union(set(unique_hashes))
     
-    return pd.concat(df_list, axis=0)
+    return pd.concat(df_list, axis=0).reset_index(drop=True)
 ```
 
 
