@@ -160,7 +160,7 @@ Kibana의 Visualize를 활용해 데이터를 시각화할 수 있습니다. 몇
 
 
 
-### 브롤러의 게임 모드별 승률
+### 게임 모드별 브롤러 승률
 
 ![](https://drive.google.com/uc?id=1t3WycCl9OQ7O-HxhFrY2fSB7FDwM6eFP)
 
