@@ -29,6 +29,15 @@ brew install elastic/tap/elasticsearch-full
 brew install elastic/tap/kibana-full
 ```
 
+```bash
+  # Elasticsearch, Kibana 환경변수 설정
+  
+  export ES_HOME=/usr/local/var/homebrew/linked/elasticsearch-full
+  export PATH=$ES_HOME/bin:$PATH
+  export KIBANA_HOME=/usr/local/var/homebrew/linked/kibana-full
+  export PATH=$KIBANA_HOME/bin:$PATH
+```
+
 
 
 ### Python API 설치
