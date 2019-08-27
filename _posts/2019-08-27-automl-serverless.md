@@ -1,7 +1,7 @@
 ---
-title: 'BigQuery, AutoML, Google AI Platform을 이용한 머신러닝 파이프라인 개발'
+title: 'BigQuery, AutoML, Google AI Platform을 이용한 머신러닝 개발 및 배포'
 date: 2019-08-27 19:00:00
-description: BigQuery, AutoML, Google AI Platform을 이용해 데이터 적재, 모델 개발/평가, 서비리스 배포 파이프라인을 간단하게 경험했습니다/
+description: BigQuery, AutoML, Google AI Platform을 이용해 데이터 적재, 모델 개발/평가, 서비리스 배포 파이프라인을 간단하게 경험했습니다.
 categories:
 - DeepLearning
 - GCP
@@ -13,20 +13,20 @@ tags:
 - automl
 ---
 
-시작은 텐서플로우 코리아에 올라운 [이 글](https://www.facebook.com/groups/TensorFlowKR/permalink/971390023202056/) 이었습니다. MLOps가 중요하고, 공부해야 한다고 생각만 하고 있다가 이 글을 읽고 빠르게 한번 도전해 봐야겠다고 생각했습니다. 참가를 목적에 둔 건 아니고, 현재 개발한 부분도 손 볼 곳이 한두군데는 아니지만, 간접적으로 클라우드 상에서의 머신러닝 모델 개발, 배포를 경험하는데 의의를 뒀습니다. 관련 레포는 [여기](https://github.com/novdov/ml-pipeline)입니다.
+시작은 텐서플로우 코리아에 올라운 [이 글](https://www.facebook.com/groups/TensorFlowKR/permalink/971390023202056/)이었습니다. MLOps가 중요하고, 공부해야 한다고 생각만 하고 있다가 이 글을 읽고 빠르게 한번 도전해 봐야겠다고 생각했습니다. 참가를 목적에 둔 건 아니고, 현재 개발한 부분도 손 볼 곳이 한두군데는 아니지만, 간접적으로 클라우드 상에서의 머신러닝 모델 개발, 배포를 경험하는데 의의를 뒀습니다. 관련 레포는 [여기](https://github.com/novdov/ml-pipeline)입니다.
 
 
 
 요구 사항은 다음과 같습니다.
 
 - BigQuery에 데이러를 적재해 사용할 것
-- AutoML을 사용할 것
-- 모델별 리스트, 버전 관리 가능할 것
-- Serverless로 배포할 것
+- AutoML을 사용할 것 (adanet, ...)
+- 모델은 버전별로 관리되고 리스트로 존재. 원하는 모델을 사용할 수 있어야 함
+- Serverless로 배포할 것 (Google Cloud Functions, AWS Lambda, Azure Function)
 
 
 
-여기서는 모두 GCP를 사용했습니다. 무료 크레딧 덕분에 부담 없이 도전할 수 있기 때문입니다. 사용한 데이터는 MNIST입니다.
+마지막 배포 부분에서는 Google Cloud Functions을 직접 이용하는 방법과 Google Cloud AI Platform을 이용하는 방법이 있는데 후자를 사용했습니다.
 
 
 
@@ -152,7 +152,7 @@ class DNNGenerator:
 
 ## 3. 서빙
 
-서버리스 모델을 위해 GCP AI Platform을 이용합니다. 관련 예제는 node.js로 많이 작성이 되어 있는데 [파이썬으로 된 자료](https://cloud.google.com/blog/products/ai-machine-learning/empower-your-ai-platform-trained-serverless-endpoints-with-machine-learning-on-google-cloud-functions)를 참고했습니다. 자세한 설정 등은 해당 글에 상세히 소개 되어 있으므로 참고하시면 좋을 것 같습니다. 서버와의 통신을 위해 `InferAPI` 라는 클래스를 작성했습니다. GCP에서 모델을 호출하고 결과를 받아옵니다. 역시 파이썬 API를 사용합니다. 작성에 어렵지 않습니다. 첫 번째 모델을 배포하고 난 뒤부터는 모델을 학습하면 해당 모델의 결과와 서버에 배포된 모델의 성능을 비교하는 데 사용되기도 합니다. (실제로는 매번 호출을 피하기 위해 각 모델별 결과를 로깅합니다.)
+서버리스 모델을 위해 Google Cloud의 AI Platform을 이용합니다. [파이썬으로 작성된 예제 자료](https://cloud.google.com/blog/products/ai-machine-learning/empower-your-ai-platform-trained-serverless-endpoints-with-machine-learning-on-google-cloud-functions)를 참고했습니다. 자세한 설정 등은 해당 글에 상세히 소개 되어 있으므로 참고하시면 좋을 것 같습니다. 서버와의 통신을 위해 `InferAPI` 라는 클래스를 이용해 모델을 호출하고 결과를 받아옵니다. 첫 번째 모델을 배포하고 난 뒤부터는 모델을 학습하면 해당 모델의 결과와 서버에 배포된 모델의 성능을 비교하는 데 사용되기도 합니다.
 
 ```python
     def predict(self, images: List[List[float]], batch_size: int = 100) -> Mapping:
