@@ -1,7 +1,7 @@
 ---
 title: 'BigQuery, AutoML, Google AI Platform을 이용한 머신러닝 파이프라인 개발'
 date: 2019-08-27 19:00:00
-description: 빅쿼리, AutoML, 서버리스 머신러닝 모델 배포까지 간단하게 경험했습니다.
+description: BigQuery, AutoML, Google AI Platform을 이용해 데이터 적재, 모델 개발/평가, 서비리스 배포 파이프라인을 간단하게 경험했습니다/
 categories:
 - DeepLearning
 - GCP
@@ -13,7 +13,7 @@ tags:
 - automl
 ---
 
-시작은 테서플로우 코리아에 올라운 [이 글](https://www.facebook.com/groups/TensorFlowKR/permalink/971390023202056/) 이었습니다. MLOps가 중요하고, 공부해야 한다고 생각만 하고 있다가 이 글을 읽고 빠르게 한번 도전해 봐야겠다고 생각했습니다. 참가를 목적에 둔 건 아니고, 현재 개발한 부분도 손 볼 곳이 한두군데는 아니지만, 간접적으로 클라우드 상에서의 머신러닝 모델 개발, 배포를 경험하는데 의의를 뒀습니다. 관련 레포는 [여기](https://github.com/novdov/ml-pipeline)입니다.
+시작은 텐서플로우 코리아에 올라운 [이 글](https://www.facebook.com/groups/TensorFlowKR/permalink/971390023202056/) 이었습니다. MLOps가 중요하고, 공부해야 한다고 생각만 하고 있다가 이 글을 읽고 빠르게 한번 도전해 봐야겠다고 생각했습니다. 참가를 목적에 둔 건 아니고, 현재 개발한 부분도 손 볼 곳이 한두군데는 아니지만, 간접적으로 클라우드 상에서의 머신러닝 모델 개발, 배포를 경험하는데 의의를 뒀습니다. 관련 레포는 [여기](https://github.com/novdov/ml-pipeline)입니다.
 
 
 
