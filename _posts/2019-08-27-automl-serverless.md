@@ -1,5 +1,5 @@
 ---
-title: 'BigQuery + AutoML + Serveless ML 모델 서빙'
+title: 'BigQuery, AutoML, Google AI Platform을 이용한 머신러닝 파이프라인 개발'
 date: 2019-08-27 19:00:00
 description: 빅쿼리, AutoML, 서버리스 머신러닝 모델 배포까지 간단하게 경험했습니다.
 categories:
@@ -200,4 +200,3 @@ class DNNGenerator:
 ![](https://drive.google.com/uc?id=1TdrVYrTUA3_gkxMAc9RxjwbtbGf8Lh29)
 
 깔끔하지 않은 부분도 많지만, 클라우드 상에서의 데이터, 모델 개발 및 서빙을 익숙하게 다룰줄 안다면 큰 자산이 될 거라고 생각합니다. 특히 데이터와 모델의 버전 관리, 자동화된 실험 등을 모두 효과적으로 해내는 것이 실무에서 머신러닝 모델 개발 과정에 큰 도움이 됟 것은 당연하기 때문이죠.
-
