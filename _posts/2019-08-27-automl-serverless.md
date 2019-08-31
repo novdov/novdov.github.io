@@ -42,9 +42,7 @@ tags:
     def get_data(self):
         def _string_to_float(_raw_image: str):
             arr = np.asarray(_raw_image.split(","), "float")
-            if self.unflatten:
-                return arr.reshape([28, 28])
-            return arr
+            return arr.reshape([28, 28])
 
         mode = self.mode
         dataset_ref = self.client.dataset(self.dataset_id)
@@ -84,14 +82,9 @@ class DNNGenerator:
     def __init__(self, learning_rate: int):
         self.learning_rate = learning_rate
 
-    def build_subnetwork_generator(self, unflatten: bool = False):
-        if unflatten:
-            shape = [28, 28, 1]
-        else:
-            shape = [int(28 * 28)]
-
+    def build_subnetwork_generator(self):
         feature_columns = [
-            tf.feature_column.numeric_column(self.FEATURE_KEY, shape=shape)
+            tf.feature_column.numeric_column(self.FEATURE_KEY, shape=[28, 28, 1])
         ]
 
         return simple_dnn.Generator(
