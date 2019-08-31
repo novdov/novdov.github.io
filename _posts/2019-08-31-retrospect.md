@@ -1,7 +1,7 @@
 ---
 title: '[회고] 전직 과정 중에'
 date: 2019-08-31 19:00:00
-description: 경영학 전공에서 데이터 사이언스 분야로 전직하는 과정을 회고했습니다.
+description: 데이터 사이언스 분야로 전직하고 있는 과정을 회고했습니다.
 categories:
 - Diary
 tags:
