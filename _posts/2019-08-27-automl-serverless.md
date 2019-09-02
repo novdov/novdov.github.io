@@ -36,7 +36,9 @@ tags:
 
 ![](https://drive.google.com/uc?id=1jIt2Tvije-vFPmRC28U3HYJURUwn8b8h)
 
-데이터는 정규화를 하지 않은 채 올려주었습니다. 처음에는 정규화를 한 `float` 으로 테이블을 구성했었는데, 문자열로 변환하는 과정에서 부동소수점이 많이 날아갔고, 학습이 제대로 되지 않았기 때문입니다. (77% 정도의 정확도) 학습 시 데이터를 불러올 때는 파이썬 API를 사용합니다. 아래는 `Dataset` 클래스의 `get_data()` 메서드입니다. 테이블을 조회한 뒤 `ndarray` 이미지와 레이블을 리턴합니다.
+데이터는 정규화를 하지 않은 채 올려주었습니다. 처음에는 정규화를 한 `float` 으로 테이블을 구성했었는데 정규화 후 데이터를 문자열로 변환하는 과정에서 부동소수점이 손실되었고, 학습이 제대로 되지 않았습니다. (77% 정도의 정확도)
+
+학습 시 데이터를 불러올 때는 파이썬 API를 사용합니다. BigQuery 쿼리문을 문자열로 작성해 쿼리를 입력할 수도 있지만 backquote 사용 때문에 API의 메서드를 사용했습니다. 아래는 `Dataset` 클래스의 `get_data()` 메서드입니다. 테이블을 조회한 뒤 `ndarray` 이미지와 레이블을 리턴합니다.
 
 ```python
     def get_data(self):
@@ -94,7 +96,9 @@ class DNNGenerator:
         )
 ```
 
-먼저 DNN 네트워크를 생성하는 `DNNGenerator` 를 선언해주었습니다. 별다른 작업이 필요 없이 아주 간단합니다. 실제 학습과 평가를 위해 Estimator를 선언해 주는 부분도 기존의 Estimator API 사용과 동일합니다. 아래는 `AdanetTrainer` 의 `create_estimator()` 라는 메서드입니다. 일반 Estimator와 거의 동일하며, `train_and_evaluate()` 메서드를 호출할 때 TrainSpec과 EvalSpec을 넘겨주면 됩니다. 모델 서빙을 위한 `exporters()` 메서드도 선언해줍니다.
+먼저 DNN 네트워크를 생성하는 `DNNGenerator` 를 선언해주었습니다. Adanet이 기본적으로`tf.Estimator` 를 기반으로 만들어졌기 때문에 Estimator 인터페이스와 거의 동일합니다. `adanet.Estimator` 를 선언할 때 `head` 와`subnetwork_generator` , `evaluator` 를 인자로 입력하면 됩니다.   
+
+학습/평가도 Estimator 인터페이스를 그대로 사용합니다. `train_and_evaluate()` 메서드를 호출할 때 `estimator`, `train_spec`, `eval_spec` 을 인자로 입력하면 됩니다. 아래에서는 `eval_spec` 에 서빙을 위해 모델을 저장하는 `exporters` 도 함께 작성했습니다.  
 
 ```python
     def create_estimator(
@@ -137,15 +141,13 @@ class DNNGenerator:
         )
 ```
 
-
-
-위와 같이 코드를 작성하고 실제 학습/평가를 진행하면 CPU에서도 꽤 빠른 시간 안에 높은 정확도를 얻을 수 있습니다. (약 96% 정도의 정확도) 일반적인 DNN보다 좋은 성능을 얻을 수 있습니다. 정확한 구현 원리는 논문을 읽어 봐야 알 수 있겠지만, 간단한 문제에서는 적절하게 활용하면 유용할 것 같습니다.
+위와 같이 코드를 작성하고 실제 학습/평가를 진행하면 CPU에서도 꽤 빠른 시간 안에 높은 정확도를 얻을 수 있습니다. (약 96% 정도의 정확도) 물론 간단한 DNN으로도 높은 정확도를 얻을 수 있을 정도로 간단한 문제이지만, 동일한 시간 내에 일반적인 DNN보다 좋은 성능을 얻을 수 있었습니다. 실무에서도 적절히 활용하면 좋을 것 같습니다.
 
 
 
 ## 3. 서빙
 
-서버리스 모델을 위해 Google Cloud의 AI Platform을 이용합니다. [파이썬으로 작성된 예제 자료](https://cloud.google.com/blog/products/ai-machine-learning/empower-your-ai-platform-trained-serverless-endpoints-with-machine-learning-on-google-cloud-functions)를 참고했습니다. 자세한 설정 등은 해당 글에 상세히 소개 되어 있으므로 참고하시면 좋을 것 같습니다. 서버와의 통신을 위해 `InferAPI` 라는 클래스를 이용해 모델을 호출하고 결과를 받아옵니다. 첫 번째 모델을 배포하고 난 뒤부터는 모델을 학습하면 해당 모델의 결과와 서버에 배포된 모델의 성능을 비교하는 데 사용되기도 합니다.
+서버리스 서빙을 위해 Google Cloud의 AI Platform을 이용합니다. [파이썬으로 작성된 예제 자료](https://cloud.google.com/blog/products/ai-machine-learning/empower-your-ai-platform-trained-serverless-endpoints-with-machine-learning-on-google-cloud-functions)를 참고했습니다. 자세한 설정 등은 해당 글에 상세히 소개 되어 있으므로 참고하시면 좋을 것 같습니다. 클라우드와의 통신을 위해 `InferAPI` 라는 클래스를 이용해 모델을 호출하고 결과를 받아옵니다. 첫 번째 모델을 배포하고 난 뒤부터는 모델을 학습하면 해당 모델의 결과와 배포된 모델의 성능을 비교하는 데 사용되기도 합니다.
 
 ```python
     def predict(self, images: List[List[float]], batch_size: int = 100) -> Mapping:
