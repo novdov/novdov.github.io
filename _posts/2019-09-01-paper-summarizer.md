@@ -1,6 +1,6 @@
 ---
 title: '논문 초록을 요약해서 슬랙으로 전송하기'
-date: 2019-08-27 19:00:00
+date: 2019-09-01 19:00:00
 description: arxiv.org 최신 논문의 초록을 요약해서 슬랙으로 전송하는 구조를 만들어 봅니다. 
 categories:
 - DeepLearning
