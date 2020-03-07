@@ -1,7 +1,7 @@
 ---
 title: '[Python 3.9] 새로 추가된 Dictionary Merge & Update Operators 살펴보기'
 date: 2020-03-08 02:00:00
-description: 파이썬 3.9에서 새롭게 도입된 dictionary merge (`|`) & update (`|=`) operator에 대해 알아봅니다.
+description: 파이썬 3.9 alpha4에서 새로 추가된 기능인 Dictionary merge & update 연산자에 대해 알아봅니다.
 categories:
 - python
 tags:
